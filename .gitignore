@@ -1,3 +1,7 @@
+dist
+
+properties/*
+
 # Logs
 logs
 *.log
