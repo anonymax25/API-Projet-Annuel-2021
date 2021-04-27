@@ -1,6 +1,6 @@
 dist
 
-properties/*
+properties/prod.*
 
 # Logs
 logs

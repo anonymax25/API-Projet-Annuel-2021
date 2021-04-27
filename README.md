@@ -1,2 +1,8 @@
 # API-Projet-Annuel-2021
-Projet annuel 2021, compilation en ligne
+Online compilation
+
+## Local Start
+
+install nodejs, npm and have a postgres DB up
+
+```npm run start:dev```
