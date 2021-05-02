@@ -7,6 +7,7 @@ import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { RootModule } from './modules/root/root.module';
 import { User } from './modules/users/user.entity';
+import { CodeExecutorModule } from './modules/code-executor/code-executor.module';
 
 const {
   POSTGRES_HOST,
@@ -35,6 +36,7 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
     RootModule,
     AuthenticationModule,
     UsersModule,
+    CodeExecutorModule
   ],
   controllers: [],
   providers: [],
