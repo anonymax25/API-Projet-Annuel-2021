@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: executor
-        image: ...
+        image: #TODO:
         ports:
           containerPort: 3001
         resources:
