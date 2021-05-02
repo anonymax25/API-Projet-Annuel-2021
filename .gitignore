@@ -1,6 +1,7 @@
-code-executor/dist
 
+./code-executor/dist
 ./main-api/dist
+
 main-api/properties/prod.*
 
 *node_modules/
