@@ -2,7 +2,7 @@
 ./code-executor/dist
 ./main-api/dist
 
-main-api/properties/prod.*
+./main-api/properties/prod.*
 
 *node_modules/
 
