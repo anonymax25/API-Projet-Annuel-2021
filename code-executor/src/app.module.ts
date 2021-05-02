@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PythonModule } from './modules/python/python.module';
+import { ExecutionModule } from './modules/execution/execution.module';
 
 @Module({
   imports: [
-    PythonModule
+    ExecutionModule
   ],
   controllers: [AppController],
   providers: [AppService],

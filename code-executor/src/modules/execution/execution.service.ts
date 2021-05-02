@@ -5,9 +5,9 @@ import { CodeExecution } from '../../entity/code-execution';
 import { Result } from '../../entity/result';
 
 @Injectable()
-export class PythonService {
+export class ExecutionService {
 
-    async execute_python(message: CodeExecution): Promise<Result> {
+    async runPython(message: CodeExecution): Promise<Result> {
         
         const filename = `${message.name}-script.py`
     
@@ -28,6 +28,42 @@ export class PythonService {
     
         return new Promise((resolve, reject) => {
             python.on('close', (code) => {
+            
+                
+                fs.unlinkSync(filename)
+
+                let result: Result = {
+                    code,
+                    stdout,
+                    stderr,
+                }
+                resolve(result)
+    
+            })
+        })
+    }
+    
+    async runJavascript(message: CodeExecution): Promise<Result> {
+        
+        const filename = `${message.name}-script.js`
+    
+        fs.writeFileSync(filename, message.code)
+    
+        let stdout;
+        let stderr;
+
+        const node = spawn('node', [filename]);
+
+        node.stdout.on('data', function (data) {
+            stdout = data.toString();
+        });
+        
+        node.stderr.on('data', function (data) {
+            stderr = data.toString();
+        });
+    
+        return new Promise((resolve, reject) => {
+            node.on('close', (code) => {
             
                 
                 fs.unlinkSync(filename)

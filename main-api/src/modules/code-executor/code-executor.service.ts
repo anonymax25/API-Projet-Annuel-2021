@@ -15,19 +15,19 @@ export class CodeExecutorService {
     constructor(private httpService: HttpService){
         this.codeExecutorClient = axios.create();
     }
+    
+    async sendCode(code: string, username: string, language: Languages ): Promise<CodeResult>{
 
-    async sendPython(code: string, username: string): Promise<CodeResult>{
-
-        const url = `${CODE_EXECUTOR_URL}:${CODE_EXECUTOR_PORT}/python`
+        const url = `${CODE_EXECUTOR_URL}:${CODE_EXECUTOR_PORT}/execution`
         const body = {
-            codeExecution: new CodeExecution(username, code, Languages.Python)
+            codeExecution: new CodeExecution(username, code, language)
         }
 
         try {
             const response = await this.httpService.post(url, body).toPromise();
-            return new CodeResult(Languages.Python, response.data)
+            return new CodeResult(language, response.data)
         }catch(e){
-            throw new NotFoundException('Coudln\'t connect to python code executor')
+            throw new NotFoundException('Coudln\'t connect to code executor')
             
         }
         

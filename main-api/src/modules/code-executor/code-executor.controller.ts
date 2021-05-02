@@ -15,16 +15,6 @@ export class CodeExecutorController {
     @UseGuards(JwtAuthenticationGuard)
     @Post()
     async execute_python(@Req() req: RequestWithUser, @Body() body: ExecuteDTO){
-        
-        let result: CodeResult = null
-        switch(body.language) {
-            case Languages.Python:
-                result = await this.codeExecutorService.sendPython(body.code, req.user.name)
-                break
-            default:
-                throw new BadRequestException(null, 'Unsupported language')
-        }
-        
-        return result
+        return await this.codeExecutorService.sendCode(body.code, req.user.name, body.language)
     }
 }
