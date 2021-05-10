@@ -12,26 +12,25 @@ const { PORT, API_VERSION } = process.env
 async function bootstrap() {
 
   const allowedResponseOrigins = [
-    "http://localhost:4200"
+    "http://localhost:3000"
   ]
 
   const app = await NestFactory.create(AppModule);
+
+  //prefix  for api URL
+  app.setGlobalPrefix(`api/v${API_VERSION}`);
 
   // swagger
   const config = new DocumentBuilder()
     .setTitle('Projet Annuel API')
     .setDescription('back nestJs de l\'application')
     .setVersion(`${API_VERSION}`)
-    .addTag('api')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
   // pipe for DTO validation
   app.useGlobalPipes(new ValidationPipe());
-
-  //prefix  for api URL
-  app.setGlobalPrefix(`api/v${API_VERSION}`);
 
   // cors config
   app.enableCors({

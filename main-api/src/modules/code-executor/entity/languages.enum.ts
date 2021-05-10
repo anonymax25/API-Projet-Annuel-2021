@@ -1,4 +1,4 @@
 export enum Languages {
-    Python = 'Python',
-    Javascript = 'Javascript'
+    Python = 'python',
+    Javascript = 'javascript'
 }

@@ -3,7 +3,9 @@ import { Controller, Req, UseGuards, Get, Put, Body, Query, Param, HttpException
 import JwtAuthenticationGuard from '../authentication/passport/jwt-authentication.guard';
 import RequestWithUser from '../authentication/interface/requestWithUser.interface';
 import { UpdateUserDTO } from './dto/updateUser.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('user')
 export class UsersController {
   constructor(

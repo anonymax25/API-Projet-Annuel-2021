@@ -7,11 +7,13 @@ import {
   ClassSerializerInterceptor, 
   UseInterceptors
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/register.dto';
 import RequestWithUser from './interface/requestWithUser.interface';
 import { LocalAuthenticationGuard } from './passport/local-authentication.guard';
 
+@ApiTags('authentication')
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {
