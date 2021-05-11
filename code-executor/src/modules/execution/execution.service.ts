@@ -37,6 +37,12 @@ export class ExecutionService {
                     stdout,
                     stderr,
                 }
+
+                //remove filename from error
+                let tmp = result.stderr.split('\n');
+                tmp.splice(1,1);
+                result.stderr = tmp.join('\n');
+
                 resolve(result)
     
             })
@@ -65,7 +71,6 @@ export class ExecutionService {
         return new Promise((resolve, reject) => {
             node.on('close', (code) => {
             
-                
                 fs.unlinkSync(filename)
 
                 let result: Result = {
@@ -73,6 +78,12 @@ export class ExecutionService {
                     stdout,
                     stderr,
                 }
+
+                //remove filename from error
+                let tmp = result.stderr.split('\n');
+                tmp.splice(0,1);
+                result.stderr = tmp.join('\n');
+
                 resolve(result)
     
             })
