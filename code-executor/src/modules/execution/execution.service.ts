@@ -39,9 +39,11 @@ export class ExecutionService {
                 }
 
                 //remove filename from error
-                let tmp = result.stderr.split('\n');
-                tmp.splice(1,1);
-                result.stderr = tmp.join('\n');
+                if(stderr){
+                    let tmp = result.stderr.split('\n');
+                    tmp.splice(1,1);
+                    result.stderr = tmp.join('\n');
+                }
 
                 resolve(result)
     
@@ -80,9 +82,11 @@ export class ExecutionService {
                 }
 
                 //remove filename from error
-                let tmp = result.stderr.split('\n');
-                tmp.splice(0,1);
-                result.stderr = tmp.join('\n');
+                if(stderr){
+                    let tmp = result.stderr.split('\n');
+                    tmp.splice(0,1);
+                    result.stderr = tmp.join('\n');
+                }
 
                 resolve(result)
     
