@@ -1,8 +1,15 @@
-# API-Projet-Annuel-2021
-Online compilation
+# Back end convertisseur à gogo
 
-## Local Start
+Langages supporé:
+- Python
+## main-api
 
-install nodejs, npm and have a postgres DB up
+api pricipale qui s'interface avec le front-end (web ou mobile):  
 
-```npm run start:dev```
+- register
+- login
+- appeler une execution de code
+
+## code-executor
+
+api pour réaliser l'execution du code encapsulé dans de conteneurs docker 

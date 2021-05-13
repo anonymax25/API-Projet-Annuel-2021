@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: executor
+  labels:
+    app: executor
+    group: executor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: executor
+  template:
+    metadata:
+      labels:
+        app: executor
+        group: executor
+    spec:
+      containers:
+        - name: executor
+          image: executor
+          ports:
+            - containerPort: 3001
+          resources: {}
+status: {}

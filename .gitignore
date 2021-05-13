@@ -1,6 +1,12 @@
-dist
 
-properties/prod.*
+./code-executor/dist
+./main-api/dist
+
+./main-api/properties/prod.*
+
+*node_modules/
+
+package-lock.json
 
 # Logs
 logs
