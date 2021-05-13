@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: executor.k8s.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: executor
+              servicePort: 3001
