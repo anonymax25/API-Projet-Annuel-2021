@@ -20,7 +20,7 @@ env:
   DEPLOYMENT_NAME: executor
   VERSION: v1
 
-  PORT: 3001
+  PORT: 3001 
 
 jobs:
   setup-build-publish-deploy:
