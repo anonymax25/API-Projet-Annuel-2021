@@ -3,7 +3,9 @@
 name: Build and Deploy to Azure
 
 on:
-  release:
+  push:
+    branches:
+      - "master"
 
 # Environment variables available to all jobs and steps in this workflow
 env:
@@ -18,11 +20,11 @@ env:
   DEPLOYMENT_NAME: executor
   VERSION: v1
 
-  PORT: 3001
+  PORT: 3001 
 
 jobs:
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+    name: Setup, Build, Publish, and Deploy 
     runs-on: ubuntu-latest
     steps:
 
