@@ -28,7 +28,6 @@ export class CodeExecutorService {
             return new CodeResult(language, response.data)
         }catch(e){
             throw new NotFoundException('Coudln\'t connect to code executor')
-            
         }
         
     }

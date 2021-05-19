@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { CodeResult } from '../../entity/code-result';
 import { Languages } from '../../entity/languages.enum';
 import { Result } from '../../entity/result';
-import { ExecuteCodeDTO } from '../../infra/dto/execute-code.dto';
+import { ExecuteCodeDTO } from './dto/execute-code.dto';
 import { ExecutionService } from './execution.service';
 
 @Controller('execution')
@@ -15,10 +15,10 @@ export class ExecutionController {
 
         let result: Result = null
         switch(body.codeExecution.language) {
-            case Languages.Python:
+            case Languages.python:
                 result = await this.executionService.runPython(body.codeExecution)
                 break
-            case Languages.Javascript:
+            case Languages.javascript:
                 result = await this.executionService.runJavascript(body.codeExecution)
                 break
             default:
