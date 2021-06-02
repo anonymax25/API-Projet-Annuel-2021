@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { UsersModule } from './modules/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { RootModule } from './modules/root/root.module';
 import { User } from './modules/users/user.entity';
 import { CodeExecutorModule } from './modules/code-executor/code-executor.module';
+import { FileUploadModule } from 'modules/file-upload/file-upload.module';
 
 const {
   POSTGRES_HOST,
@@ -36,7 +35,8 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
     RootModule,
     AuthenticationModule,
     UsersModule,
-    CodeExecutorModule
+    CodeExecutorModule,
+    FileUploadModule,
   ],
   controllers: [],
   providers: [],
