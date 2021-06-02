@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from "fs";
 import { spawn } from 'child_process';
-import { CodeExecution } from '../../entity/code-execution';
-import { Result } from '../../entity/result';
-import { Languages } from '../../entity/languages.enum';
 import { Extensions } from '../../entity/extensions.enum';
 import { RunCommand } from '../../entity/run-command.enum';
+import { CodeExecution } from './entity/code-execution';
+import { Result } from './entity/result';
 
 @Injectable()
 export class ExecutionService {

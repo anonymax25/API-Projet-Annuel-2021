@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { CodeResult } from '../../entity/code-result';
-import { Languages } from '../../entity/languages.enum';
-import { Result } from '../../entity/result';
+import { CodeResult } from './entity/code-result';
+import { Languages } from './entity/languages.enum';
+import { Result } from './entity/result';
 import { ExecuteCodeDTO } from './dto/execute-code.dto';
 import { ExecutionService } from './execution.service';
 
