@@ -1,7 +1,8 @@
 # Back end convertisseur à gogo
 
-Langages supporé:
-- Python
+Langages supporté:
+- python
+- javascript
 ## main-api
 
 api pricipale qui s'interface avec le front-end (web ou mobile):  
