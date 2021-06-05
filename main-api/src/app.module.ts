@@ -7,6 +7,10 @@ import { RootModule } from './modules/root/root.module';
 import { User } from './modules/users/user.entity';
 import { CodeExecutorModule } from './modules/code-executor/code-executor.module';
 import { FileUploadModule } from 'modules/file-upload/file-upload.module';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from '@hapi/joi';
+import { PrivateFilesModule } from 'modules/private-files/private-files.module';
+import PrivateFile from 'modules/private-files/private-file.entity';
 
 const {
   POSTGRES_HOST,
@@ -26,12 +30,20 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   logging: ['error'],
-  entities: [User],
+  entities: [User, PrivateFile],
   synchronize: true
 };
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(POSTGRES_DB_CONFIG),
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        AWS_REGION: Joi.string().required(),
+        AWS_ACCESS_KEY_ID: Joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+      })
+    }),
     RootModule,
     AuthenticationModule,
     UsersModule,
@@ -41,4 +53,4 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
