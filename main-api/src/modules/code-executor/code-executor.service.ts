@@ -16,11 +16,11 @@ export class CodeExecutorService {
         this.codeExecutorClient = axios.create();
     }
     
-    async sendCode(code: string, username: string, language: Languages ): Promise<CodeResult>{
+    async sendCode(code: string, username: string, language: Languages, fileUrl: string ): Promise<CodeResult>{
 
         const url = `${CODE_EXECUTOR_URL}:${CODE_EXECUTOR_PORT}/execution`
         const body = {
-            codeExecution: new CodeExecution(username, code, language)
+            codeExecution: new CodeExecution(username, code, language, fileUrl)
         }
 
         try {

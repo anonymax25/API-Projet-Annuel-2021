@@ -1,4 +1,4 @@
-import { IsIn, IsNotEmpty } from "class-validator"
+import { IsIn, IsNotEmpty, IsOptional } from "class-validator"
 import { Languages } from "../entity/languages.enum"
 
 export class ExecuteDTO {
@@ -9,4 +9,7 @@ export class ExecuteDTO {
     @IsNotEmpty()
     @IsIn(Object.values(Languages))
     language: Languages
+
+    @IsOptional()
+    fileUrl: string
 }
