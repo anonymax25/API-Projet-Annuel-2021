@@ -28,7 +28,6 @@ export class UsersService extends BaseService<User>{
   }
 
   async getAllPrivateFiles(userId: number) {
-    console.log("pouloulou", userId)
     const userWithFiles = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['files'] }
@@ -39,7 +38,8 @@ export class UsersService extends BaseService<User>{
         userWithFiles.files.map(async (file) => {
           const url = await this.privateFilesService.generatePresignedUrl(file.key);
           return {
-            ...file,
+            id: file.id,
+            name: file.key.replace(file.key.match(/((\w{4,12}-?)){5}/)[0],""),
             url
           }
         })
