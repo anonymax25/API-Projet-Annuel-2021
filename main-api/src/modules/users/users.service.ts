@@ -33,7 +33,6 @@ export class UsersService extends BaseService<User>{
     const userWithFiles = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['files'] }
-    
     );
     if (userWithFiles) {
       return Promise.all(
@@ -42,6 +41,7 @@ export class UsersService extends BaseService<User>{
           return {
             id: file.id,
             name: file.key.replace(file.key.match(/((\w{4,12}-?)){5}/)[0],""),
+            key: file.key,
             url
           }
         })

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
@@ -43,6 +43,31 @@ export class PrivateFilesService {
       Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
       ResponseContentType: getMime(key),
       Key: key,
+    })
+  }
+  
+  public async deleteFile(key: string) {
+    const s3 = new S3();
+
+    console.log(key);
+    
+    let params = {
+      Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
+      Key: key
+    }
+
+    console.log(params);
+    
+    s3.deleteObject(params, (err, data) => {
+      if(err){
+        throw new InternalServerErrorException(err)
+      }
+
+      console.log(data);
+      
+
+      return true
+
     })
   }
 }
