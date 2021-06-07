@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { config } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
+import * as morgan from 'morgan';
 
 
 const logger = new Logger('Init')
@@ -31,6 +32,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('api', app, document);
 
+  app.use(morgan('tiny'));
+  
   // pipe for DTO validation
   app.useGlobalPipes(new ValidationPipe());
 
