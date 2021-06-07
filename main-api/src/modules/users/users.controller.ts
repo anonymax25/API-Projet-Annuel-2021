@@ -24,6 +24,23 @@ export class UsersController {
     return user;
   }
 
+
+  @Get('file')
+  @UseGuards(JwtAuthenticationGuard)
+  async getAllPrivateFiles(@Req() request: RequestWithUser) {
+    return this.usersService.getAllPrivateFiles(request.user.id);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Get(':id')
+  async getUserById(@Req() request: RequestWithUser, @Param('id') uid: number) {
+
+    const user = await this.usersService.findOne({ id: uid });
+
+    delete user.password;
+    return user;
+  }
+
   @UseGuards(JwtAuthenticationGuard)
   @Put()
   async update(@Req() req: RequestWithUser, @Body() updateUser: UpdateUserDTO) {
@@ -44,9 +61,4 @@ export class UsersController {
     return this.usersService.addPrivateFile(request.user.id, file.buffer, file.originalname);
   }
   
-  @Get('file')
-  @UseGuards(JwtAuthenticationGuard)
-  async getAllPrivateFiles(@Req() request: RequestWithUser) {
-    return this.usersService.getAllPrivateFiles(request.user.id);
-  }
 }
