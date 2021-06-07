@@ -6,6 +6,7 @@ import { UpdateUserDTO } from './dto/updateUser.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Post } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CodeDTO } from 'modules/code-save/dto/code.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -31,6 +32,12 @@ export class UsersController {
     return this.usersService.getAllPrivateFiles(request.user.id);
   }
 
+  @Get('code')
+  @UseGuards(JwtAuthenticationGuard)
+  async getAllCodes(@Req() request: RequestWithUser) {
+    return this.usersService.getAllCodes(request.user.id);
+  }
+
   @UseGuards(JwtAuthenticationGuard)
   @Get(':id')
   async getUserById(@Req() request: RequestWithUser, @Param('id') uid: number) {
@@ -44,10 +51,10 @@ export class UsersController {
   @UseGuards(JwtAuthenticationGuard)
   @Put()
   async update(@Req() req: RequestWithUser, @Body() updateUser: UpdateUserDTO) {
-    if(updateUser.id !== req.user.id)
+    if (updateUser.id !== req.user.id)
       throw new ForbiddenException(null, 'Not allowed to modify other users');
 
-    let user = await this.usersService.findOne({id: req.user.id});
+    let user = await this.usersService.findOne({ id: req.user.id });
 
     const savedUser = await this.usersService.save(this.usersService.fillUser(user, updateUser));
     delete savedUser.password
@@ -60,5 +67,10 @@ export class UsersController {
   async addPrivateFile(@Req() request: RequestWithUser, @UploadedFile() file: Express.Multer.File) {
     return this.usersService.addPrivateFile(request.user.id, file.buffer, file.originalname);
   }
-  
+
+  @Post('code')
+  @UseGuards(JwtAuthenticationGuard)
+  async addCode(@Req() request: RequestWithUser, @Body() code: CodeDTO) {
+    return this.usersService.addCode(request.user.id, code.name, code.code);
+  }
 }

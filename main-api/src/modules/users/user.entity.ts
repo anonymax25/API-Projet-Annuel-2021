@@ -1,3 +1,4 @@
+import Code from 'modules/code-save/code-save.entity';
 import PrivateFile from 'modules/private-files/private-file.entity';
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -20,4 +21,10 @@ export class User extends BaseEntity {
     (file: PrivateFile) => file.owner
   )
   public files: PrivateFile[];
+
+  @OneToMany(
+    () => Code,
+    (code: Code) => code.owner
+  )
+  public codes: Code[];
 }
