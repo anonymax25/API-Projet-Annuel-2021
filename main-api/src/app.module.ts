@@ -6,7 +6,6 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 import { RootModule } from './modules/root/root.module';
 import { User } from './modules/users/user.entity';
 import { CodeExecutorModule } from './modules/code-executor/code-executor.module';
-import { FileUploadModule } from 'modules/file-upload/file-upload.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { PrivateFilesModule } from 'modules/private-files/private-files.module';
@@ -48,7 +47,6 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
     AuthenticationModule,
     UsersModule,
     CodeExecutorModule,
-    FileUploadModule,
   ],
   controllers: [],
   providers: [],
