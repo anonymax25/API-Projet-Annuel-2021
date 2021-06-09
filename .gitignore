@@ -1,4 +1,12 @@
 
+# exclude everything
+code-executor/code/*
+code-executor/file/*
+# exception to the rule
+!code-executor/code/.gitkeep 
+!code-executor/file/.gitkeep 
+
+
 ./code-executor/dist
 ./main-api/dist
 

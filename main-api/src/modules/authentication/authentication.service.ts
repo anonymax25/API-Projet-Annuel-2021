@@ -47,7 +47,7 @@ export class AuthenticationService {
       await this.verifyPassword(plainTextPassword, user.password);
       return user;
     } catch (error) {
-      throw new ForbiddenException(null, 'Wrong credentials provided')
+      throw new ForbiddenException(error, 'Wrong credentials provided')
     }
   }
 
