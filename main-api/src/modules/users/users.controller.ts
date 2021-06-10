@@ -75,10 +75,29 @@ export class UsersController {
   async addPrivateFile(@Req() request: RequestWithUser, @UploadedFile() file: Express.Multer.File) {
     return this.usersService.addPrivateFile(request.user.id, file.buffer, file.originalname);
   }
+  
+  @Post(':id/file')
+  @UseGuards(JwtAuthenticationGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async addPrivateFileById(@Req() request: RequestWithUser, @Param('id') id: number, @Query('isResult') isResult: boolean, @UploadedFile() file: Express.Multer.File) {
+    return this.usersService.addPrivateFile(id, file.buffer, file.originalname, isResult);
+  }
 
   @Post('code')
   @UseGuards(JwtAuthenticationGuard)
   async addCode(@Req() request: RequestWithUser, @Body() code: CodeDTO) {
     return this.usersService.addCode(request.user.id, code.name, code.code);
+  }
+
+  @Put(':id/fileKey')
+  @UseGuards(JwtAuthenticationGuard)
+  async updateResultFile(@Req() request: RequestWithUser, @Param('id') id: number, @Body() body: { resultKey: string}) {
+    let user = await this.usersService.findOne({ id });
+
+    user.resultKey = body.resultKey
+
+    const savedUser = await this.usersService.save(user);
+    delete savedUser.password
+    return savedUser;
   }
 }

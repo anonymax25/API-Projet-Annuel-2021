@@ -18,13 +18,13 @@ export class CodeExecutorService {
         this.codeExecutorClient = axios.create();
     }
     
-    async sendCode(code: string, username: string, language: Languages, key: string ): Promise<CodeResult>{
+        async sendCode(code: string, username: string,  language: Languages, key: string, userId: number,): Promise<CodeResult>{
 
         let fileUrl = await this.privateFilesService.generatePresignedUrl(key)
 
         const url = `${CODE_EXECUTOR_URL}:${CODE_EXECUTOR_PORT}/execution`
         const body = {
-            codeExecution: new CodeExecution(username, code, language, fileUrl, key)
+            codeExecution: new CodeExecution(username, code, language, fileUrl, key, userId)
         }
 
         try {

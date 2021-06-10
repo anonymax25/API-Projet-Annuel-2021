@@ -17,23 +17,24 @@ export class PrivateFilesService {
     private readonly configService: ConfigService
   ) {}
  
-  async uploadPrivateFile(dataBuffer: Buffer, ownerId: number, filename: string) {
+  async uploadPrivateFile(dataBuffer: Buffer, ownerId: number, filename: string, isResult: boolean) {
     const s3 = new S3();
     const uploadResult = await s3.upload({
       Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
       Body: dataBuffer,
-      Key: `${uuid()}-${filename}`
-    })
-      .promise();
- 
-    const newFile = this.privateFilesRepository.create({
-      key: uploadResult.Key,
-      owner: {
-        id: ownerId
-      }
-    });
-    await this.privateFilesRepository.save(newFile);
-    return newFile;
+      Key: isResult ? filename : `${uuid()}-${filename}`
+    }).promise();
+
+    if(!isResult){
+      const newFile = this.privateFilesRepository.create({
+        key: uploadResult.Key,
+        owner: {
+          id: ownerId
+        }
+      });
+      await this.privateFilesRepository.save(newFile);
+      return newFile;
+    }
   }
 
   public async generatePresignedUrl(key: string) {

@@ -15,6 +15,9 @@ export class User extends BaseEntity {
 
   @Column()
   public password: string;
+  
+  @Column({nullable: true})
+  public resultKey: string;
 
   @OneToMany(
     () => PrivateFile,

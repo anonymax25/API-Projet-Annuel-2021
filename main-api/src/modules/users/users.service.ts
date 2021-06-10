@@ -25,8 +25,8 @@ export class UsersService extends BaseService<User>{
     return user
   }
 
-  async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string) {
-    return this.privateFilesService.uploadPrivateFile(imageBuffer, userId, filename);
+  async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string, isResult: boolean = false) {
+    return this.privateFilesService.uploadPrivateFile(imageBuffer, userId, filename, isResult);
   }
 
   async getAllPrivateFiles(userId: number) {

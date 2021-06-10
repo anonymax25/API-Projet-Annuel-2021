@@ -8,12 +8,14 @@ import { Languages } from './entity/languages.enum';
 import { Extensions } from '../../entity/extensions.enum';
 import { RunCommand } from '../../entity/run-command.enum';
 import { CodeExecution } from './entity/code-execution';
-import { S3Service } from './s3.service';
-
+import { AuthenticationService, Token } from './authentication.service';
+import axios from 'axios';
+import { mainApiConfig } from 'src/main';
+import { FileService } from './file.service';
 @Injectable()
 export class ExecutionService {
 
-    constructor(public s3Service: S3Service){}
+    constructor(private fileService: FileService){}
 
     async runPython(message: CodeExecution): Promise<Result> {
         
@@ -34,6 +36,10 @@ run(f.read().hex());
         return this.runCode(message, formatStderr)
     }
     
+    writeResults(buffer: Buffer){
+        //fs.writeFileSync(__dirname + '/../file/${message.name}:result${message.fileKey.split('.').pop()}', Buffer.from(resultBuffer), { flag: 'wb'})
+        
+    }
     async runJavascript(message: CodeExecution): Promise<Result> {
 
         message.code = 
@@ -41,7 +47,8 @@ run(f.read().hex());
         const fs = require('fs');
         let data = fs.readFileSync(__dirname + '/../file/${message.fileKey}');
         ${message.code}
-        run(data);
+        const resultBuffer = run(data);
+        fs.writeFileSync(__dirname + '/../file/${message.name}:result.${message.fileKey.split('.').pop()}', Buffer.from(resultBuffer), { flag: 'w'})
         `
 
         const formatStderr = (stderr: string) => {
@@ -75,6 +82,7 @@ run(f.read().hex());
         let stdout = [];
         let stderr = [];
 
+        const resultKey = `${codeExecution.name}:result.${codeExecution.fileKey.split('.').pop()}`
         const filePath = `./file/${codeExecution.fileKey}`
         const codeFilePath = `./code/${codeExecution.name}-script.${Extensions[codeExecution.language]}`
         
@@ -101,16 +109,20 @@ run(f.read().hex());
         });
     
         return new Promise((resolve, reject) => {
-            node.on('close', (code) => {
+            node.on('close', async (code) => {
                 const closeExecution = Date.now()
                 fs.unlinkSync(codeFilePath)
-                fs.unlinkSync(filePath)
+
+                await this.fileService.uploadFile(resultKey, codeExecution.userId)
+                
+                //fs.unlinkSync(filePath)
 
                 let result: Result = {
                     code,
                     stdout: stdout.join(""),
                     stderr: stderr.join(""),
-                    executionTime: closeExecution - startExecution
+                    executionTime: closeExecution - startExecution,
+                    resultKey
                 }
 
                 //remove filename from error
@@ -118,9 +130,6 @@ run(f.read().hex());
                     result.stderr = formatStderr(result.stderr)
                 }
 
-                console.log(result);
-                
-                
                 resolve(result)
     
             })

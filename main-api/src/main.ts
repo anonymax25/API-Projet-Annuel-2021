@@ -45,12 +45,6 @@ async function bootstrap() {
     allowedHeaders: '*',
   })
 
-  const configService = app.get(ConfigService);
-  config.update({
-    accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),
-    secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),
-    region: configService.get('AWS_REGION'),
-  });
   
   // start app
   await app.listen(PORT || 3000).then(() => {

@@ -3,4 +3,5 @@ export class Result {
     stdout: string
     stderr: string
     executionTime: number
+    resultKey: string
 }

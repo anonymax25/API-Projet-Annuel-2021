@@ -6,5 +6,6 @@ export class CodeExecution {
         public code: string, 
         public language: Languages, 
         public fileUrl: string,
-        public fileKey: string){}
+        public fileKey: string,
+        public userId: number){}
 }
