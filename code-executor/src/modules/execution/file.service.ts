@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as fs from 'fs';
 import * as FormData from "form-data";
 import { AuthenticationService, Token } from './authentication.service';
-import { mainApiConfig } from 'src/main';
+import { config } from 'src/main';
 
 @Injectable()
 export class FileService {
@@ -12,7 +12,7 @@ export class FileService {
 
     async uploadFile(key: string, userId: number){
 
-        const token: Token = await this.authenticationService.login(mainApiConfig)
+        const token: Token = await this.authenticationService.login(config.mainApiConfig)
 
         const form = new FormData();
         form.append('file', fs.createReadStream(`./file/${key}`));
@@ -25,7 +25,7 @@ export class FileService {
                 }
             };
 
-            const sendImgUrl = `http://localhost:3030/api/v1/user/${userId}/file?isResult=true`
+            const sendImgUrl = `${config.mainApiConfig.url}/user/${userId}/file?isResult=true`
             const uploadResponse = await axios.post(sendImgUrl, form, request_config);
         } catch (error) {
             throw new InternalServerErrorException(error)            
@@ -38,7 +38,7 @@ export class FileService {
                 }
             };
 
-            const updateUserKey = `http://localhost:3030/api/v1/user/${userId}/fileKey`
+            const updateUserKey = `${config.mainApiConfig.url}/user/${userId}/fileKey`
             const updateResponse = await axios.put(updateUserKey, { resultKey: key}, updateUserConfig);
         } catch (error) {
             throw new InternalServerErrorException(error)            

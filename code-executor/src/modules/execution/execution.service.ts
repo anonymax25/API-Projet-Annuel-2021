@@ -8,14 +8,14 @@ import { Languages } from './entity/languages.enum';
 import { Extensions } from '../../entity/extensions.enum';
 import { RunCommand } from '../../entity/run-command.enum';
 import { CodeExecution } from './entity/code-execution';
-import { AuthenticationService, Token } from './authentication.service';
-import axios from 'axios';
-import { mainApiConfig } from 'src/main';
+import { config } from 'src/main';
 import { FileService } from './file.service';
 @Injectable()
 export class ExecutionService {
 
     constructor(private fileService: FileService){}
+
+    executionTimeoutMs: number = config.execution_timeout;
 
     async runPython(message: CodeExecution): Promise<Result> {
         
@@ -47,8 +47,9 @@ run(f.read().hex());
         const fs = require('fs');
         let data = fs.readFileSync(__dirname + '/../file/${message.fileKey}');
         ${message.code}
-        const resultBuffer = run(data);
-        fs.writeFileSync(__dirname + '/../file/${message.name}:result.${message.fileKey.split('.').pop()}', Buffer.from(resultBuffer), { flag: 'w'})
+        run(data).then((resultBuffer) => {
+            fs.writeFileSync(__dirname + '/../file/${message.name}:result.${message.fileKey.split('.').pop()}', Buffer.from(resultBuffer), { flag: 'w'})
+        });
         `
 
         const formatStderr = (stderr: string) => {
@@ -79,8 +80,9 @@ run(f.read().hex());
       
     async runCode(codeExecution: CodeExecution, formatStderr: (stderr: string) => string): Promise<Result> {
 
-        let stdout = [];
-        let stderr = [];
+        let stdout: string[] = [];
+        let stderr: string[] = [];
+        let isTimeout: boolean = false
 
         const resultKey = `${codeExecution.name}:result.${codeExecution.fileKey.split('.').pop()}`
         const filePath = `./file/${codeExecution.fileKey}`
@@ -98,7 +100,14 @@ run(f.read().hex());
         
 
         const startExecution = Date.now()
+        
+        setTimeout(() => {
+           isTimeout = true
+           node.kill();
+        }, this.executionTimeoutMs)
+        
         const node = spawn(RunCommand[codeExecution.language], [codeFilePath]);
+
 
         node.stdout.on('data', function (data) {
             stdout.push(data.toString());
@@ -109,14 +118,25 @@ run(f.read().hex());
         });
     
         return new Promise((resolve, reject) => {
-            node.on('close', async (code) => {
+            node.on('exit', async (code) => {
+                
                 const closeExecution = Date.now()
+                
                 fs.unlinkSync(codeFilePath)
+
+                if(isTimeout){
+                    let result: Result = {
+                        code: null,
+                        stdout: null,
+                        stderr: `Timeout of ${this.executionTimeoutMs}ms exceeded`,
+                        executionTime: closeExecution - startExecution,
+                        resultKey: null
+                    }
+                    resolve(result)
+                }
 
                 await this.fileService.uploadFile(resultKey, codeExecution.userId)
                 
-                //fs.unlinkSync(filePath)
-
                 let result: Result = {
                     code,
                     stdout: stdout.join(""),
@@ -131,7 +151,6 @@ run(f.read().hex());
                 }
 
                 resolve(result)
-    
             })
         })
 
