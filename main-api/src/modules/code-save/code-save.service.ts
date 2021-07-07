@@ -30,4 +30,8 @@ export class CodeSaveService {
   async updateCode(code: CodeDTO | Code) {
     return await this.codeSaveRepository.save(code)
   }
+
+  async deleteCode(id: number) {
+    return await this.codeSaveRepository.delete({id});
+  }
 }

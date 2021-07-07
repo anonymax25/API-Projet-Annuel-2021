@@ -95,6 +95,13 @@ export class UsersController {
   async updateCode(@Req() request: RequestWithUser, @Body() code:  CodeDTO | Code) {
     return this.usersService.updateCode(code);
   }
+  
+  @Delete('code/:id')
+  @HttpCode(204)
+  @UseGuards(JwtAuthenticationGuard)
+  async deleteCode(@Req() request: RequestWithUser, @Param('id') id: number) {
+    return this.usersService.deleteCode(id);
+  }
 
   @Put(':id/fileKey')
   @UseGuards(JwtAuthenticationGuard)

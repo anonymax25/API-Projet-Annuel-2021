@@ -77,4 +77,8 @@ export class UsersService extends BaseService<User>{
   async updateCode(code: CodeDTO | Code) {
     return this.codeSaveService.updateCode(code);
   }
+  
+  async deleteCode(id: number) {
+    return this.codeSaveService.deleteCode(id);
+  }
 }
