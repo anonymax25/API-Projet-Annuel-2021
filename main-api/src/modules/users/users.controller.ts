@@ -8,6 +8,7 @@ import { Post } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CodeDTO } from 'modules/code-save/dto/code.dto';
 import { PrivateFilesService } from 'modules/private-files/private-files.service';
+import Code from 'modules/code-save/code-save.entity';
 
 @ApiTags('user')
 @Controller('user')
@@ -87,6 +88,12 @@ export class UsersController {
   @UseGuards(JwtAuthenticationGuard)
   async addCode(@Req() request: RequestWithUser, @Body() code: CodeDTO) {
     return this.usersService.addCode(request.user.id, code.name, code.code);
+  }
+  
+  @Put('code')
+  @UseGuards(JwtAuthenticationGuard)
+  async updateCode(@Req() request: RequestWithUser, @Body() code:  CodeDTO | Code) {
+    return this.usersService.updateCode(code);
   }
 
   @Put(':id/fileKey')

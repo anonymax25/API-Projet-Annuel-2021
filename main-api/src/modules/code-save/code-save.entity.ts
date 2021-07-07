@@ -14,6 +14,14 @@ class Code extends BaseEntity{
  
   @ManyToOne(() => User, (owner: User) => owner.files)
   public owner: User;
+
+  constructor(id: number, name: string, code: string, owner: User){
+    super()
+    this.id = id
+    this.name = name
+    this.code = code
+    this.owner = owner
+  }
 }
  
 export default Code;

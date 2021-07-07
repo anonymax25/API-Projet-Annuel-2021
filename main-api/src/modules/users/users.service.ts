@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import Code from 'modules/code-save/code-save.entity';
 import { CodeSaveService } from 'modules/code-save/code-save.service';
+import { CodeDTO } from 'modules/code-save/dto/code.dto';
 import { PrivateFilesService } from 'modules/private-files/private-files.service';
 import { Connection, Repository } from 'typeorm';
 import { BaseService } from '../../shared/base.service';
@@ -70,5 +72,9 @@ export class UsersService extends BaseService<User>{
 
   async addCode(userId: number, name: string, code: string) {
     return this.codeSaveService.saveCode(userId, name, code);
+  }
+  
+  async updateCode(code: CodeDTO | Code) {
+    return this.codeSaveService.updateCode(code);
   }
 }

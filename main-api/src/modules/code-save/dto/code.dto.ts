@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 
 export class CodeDTO {
     
@@ -10,4 +10,7 @@ export class CodeDTO {
     @IsString()
     @IsNotEmpty()
     code: string
+
+    @IsOptional()
+    id: number
 }
