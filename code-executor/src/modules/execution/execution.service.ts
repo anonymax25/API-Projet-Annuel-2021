@@ -29,7 +29,7 @@ run(f.read().hex());
 
         const formatStderr = (stderr: string) => {
             let tmp = stderr.split('\n');
-            tmp.splice(1,1);
+            //tmp.splice(1,1);
             return tmp.join('\n');
         }
         
@@ -54,7 +54,7 @@ run(f.read().hex());
 
         const formatStderr = (stderr: string) => {
             let tmp = stderr.split('\n');
-            tmp.splice(0,1);
+            //tmp.splice(0,1);
             return tmp.join('\n');
         }
         
