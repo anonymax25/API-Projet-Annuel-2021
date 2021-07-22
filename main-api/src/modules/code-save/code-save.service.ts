@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
+import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
 import Code from './code-save.entity';
 import { CodeDTO } from './dto/code.dto';
+import { Languages } from 'modules/code-executor/entity/languages.enum';
 
  
 @Injectable()
@@ -12,10 +14,11 @@ export class CodeSaveService {
   constructor(
     @InjectRepository(Code)
     private codeSaveRepository: Repository<Code>,
+    private readonly tokenCodeSaveService: TokenCodeSaveService,
     private readonly configService: ConfigService
   ) {}
  
-  async saveCode(ownerId: number, name: string, code: string) {
+  async saveCode(ownerId: number, name: string, code: string, langage: Languages) {
     const newCode = this.codeSaveRepository.create({
       name: name,
       code: code,
@@ -23,6 +26,7 @@ export class CodeSaveService {
         id: ownerId
       }
     });
+    this.tokenCodeSaveService.saveToken(ownerId, code, langage);
     await this.codeSaveRepository.save(newCode);
     return newCode;
   }

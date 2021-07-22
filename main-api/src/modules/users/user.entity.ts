@@ -1,4 +1,5 @@
 import Code from 'modules/code-save/code-save.entity';
+import { TokenCode } from 'modules/code-token/code-token.entity';
 import PrivateFile from 'modules/private-files/private-file.entity';
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -23,6 +24,7 @@ export class User extends BaseEntity {
     () => PrivateFile,
     (file: PrivateFile) => file.owner
   )
+
   public files: PrivateFile[];
 
   @OneToMany(
@@ -30,4 +32,10 @@ export class User extends BaseEntity {
     (code: Code) => code.owner
   )
   public codes: Code[];
+
+  @OneToMany(
+    () => TokenCode,
+    (tokenCode: TokenCode) => tokenCode.owner
+  )
+  public tokens: TokenCode[];
 }

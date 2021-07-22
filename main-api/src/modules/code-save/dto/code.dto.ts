@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { IsIn, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { Languages } from "modules/code-executor/entity/languages.enum";
 
 export class CodeDTO {
     
@@ -10,6 +11,10 @@ export class CodeDTO {
     @IsString()
     @IsNotEmpty()
     code: string
+
+    @IsNotEmpty()
+    @IsIn(Object.values(Languages))
+    language: Languages
 
     @IsOptional()
     id: number

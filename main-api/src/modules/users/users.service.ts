@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Languages } from 'modules/code-executor/entity/languages.enum';
 import Code from 'modules/code-save/code-save.entity';
 import { CodeSaveService } from 'modules/code-save/code-save.service';
 import { CodeDTO } from 'modules/code-save/dto/code.dto';
@@ -16,7 +17,6 @@ export class UsersService extends BaseService<User>{
     private usersRepository: Repository<User>,
     private readonly privateFilesService: PrivateFilesService,
     private readonly codeSaveService: CodeSaveService,
-
   ) {
     super(User)
   }
@@ -70,8 +70,8 @@ export class UsersService extends BaseService<User>{
     throw new NotFoundException('User with this id does not exist');
   }
 
-  async addCode(userId: number, name: string, code: string) {
-    return this.codeSaveService.saveCode(userId, name, code);
+  async addCode(userId: number, name: string, code: string, langage: Languages) {
+    return this.codeSaveService.saveCode(userId, name, code, langage);
   }
   
   async updateCode(code: CodeDTO | Code) {

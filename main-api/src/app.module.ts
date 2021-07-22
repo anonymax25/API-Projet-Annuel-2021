@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import PrivateFile from 'modules/private-files/private-file.entity';
 import Code from 'modules/code-save/code-save.entity';
+import { TokenCode } from 'modules/code-token/code-token.entity';
 
 const {
   POSTGRES_HOST,
@@ -29,7 +30,7 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   logging: ['error'],
-  entities: [User, PrivateFile, Code],
+  entities: [User, PrivateFile, Code, TokenCode],
   synchronize: true
 };
 
