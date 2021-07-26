@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
-    "start": "ENV=prod node dist/main.js",
+    "start": "rimraf dist && tsc && ENV=prod node dist/main.js",
     "start:dev": "nodemon",
-    "start:prod": "rimraf dist && tsc && ENV=prod node dist/main.js",
+    "start:prod": "npm run start",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
