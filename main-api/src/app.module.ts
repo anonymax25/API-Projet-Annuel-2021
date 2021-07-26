@@ -69,7 +69,7 @@ if(ENV === 'prod'){
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
       })
     }),
-    ServeStaticModule.forRoot({rootPath: join(__dirname, '..', ENV === 'eprod' ? './static/prod' : './static/dev')}),
+    ServeStaticModule.forRoot({rootPath: join(__dirname, '..', ENV === 'prod' ? './static/prod' : './static/dev')}),
     RootModule,
     AuthenticationModule,
     UsersModule,
