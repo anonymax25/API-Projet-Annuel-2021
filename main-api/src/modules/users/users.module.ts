@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { PrivateFilesModule } from 'modules/private-files/private-files.module';
+import { PrivateFilesModule } from '../private-files/private-files.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { CodeSaveModule } from 'modules/code-save/code-save.module';
-import { TokenCodeSaveModule } from 'modules/code-token/code-token.module';
+import { CodeSaveModule } from '../code-save/code-save.module';
+import { TokenCodeSaveModule } from '../code-token/code-token.module';
 
 @Module({
   imports: [

@@ -5,7 +5,6 @@ import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuid } from 'uuid';
 import PrivateFile from './private-file.entity';
-import { BaseService } from 'shared/base.service';
 import getMime from './utils/mime-type';
 
  

@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
-import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
+import { TokenCodeSaveService } from '../code-token/code-token.service';
 import Code from './code-save.entity';
 import { CodeDTO } from './dto/code.dto';
-import { Languages } from 'modules/code-executor/entity/languages.enum';
+import { Languages } from '../code-executor/entity/languages.enum';
 
  
 @Injectable()

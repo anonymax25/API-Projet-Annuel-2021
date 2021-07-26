@@ -8,9 +8,9 @@ import { User } from './modules/users/user.entity';
 import { CodeExecutorModule } from './modules/code-executor/code-executor.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
-import PrivateFile from 'modules/private-files/private-file.entity';
-import Code from 'modules/code-save/code-save.entity';
-import { TokenCode } from 'modules/code-token/code-token.entity';
+import PrivateFile from './modules/private-files/private-file.entity';
+import Code from './modules/code-save/code-save.entity';
+import { TokenCode } from './modules/code-token/code-token.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 

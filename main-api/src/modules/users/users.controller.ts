@@ -6,9 +6,9 @@ import { UpdateUserDTO } from './dto/updateUser.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Post } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CodeDTO } from 'modules/code-save/dto/code.dto';
-import { PrivateFilesService } from 'modules/private-files/private-files.service';
-import Code from 'modules/code-save/code-save.entity';
+import { CodeDTO } from '../code-save/dto/code.dto';
+import { PrivateFilesService } from '../private-files/private-files.service';
+import Code from '../code-save/code-save.entity';
 
 @ApiTags('user')
 @Controller('user')

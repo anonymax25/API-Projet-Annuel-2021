@@ -1,8 +1,8 @@
 import { HttpService, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { response } from 'express';
-import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
-import { PrivateFilesService } from 'modules/private-files/private-files.service';
+import { TokenCodeSaveService } from '../code-token/code-token.service';
+import { PrivateFilesService } from '../private-files/private-files.service';
 import { CodeExecution } from './entity/code-execution';
 import { CodeResult } from './entity/code-result';
 import { Languages } from './entity/languages.enum';

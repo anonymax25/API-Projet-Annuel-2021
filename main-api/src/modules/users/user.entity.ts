@@ -1,6 +1,6 @@
-import Code from 'modules/code-save/code-save.entity';
-import { TokenCode } from 'modules/code-token/code-token.entity';
-import PrivateFile from 'modules/private-files/private-file.entity';
+import Code from '../code-save/code-save.entity';
+import { TokenCode } from '../code-token/code-token.entity';
+import PrivateFile from '../private-files/private-file.entity';
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

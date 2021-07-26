@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Languages } from 'modules/code-executor/entity/languages.enum';
-import Code from 'modules/code-save/code-save.entity';
-import { CodeSaveService } from 'modules/code-save/code-save.service';
-import { CodeDTO } from 'modules/code-save/dto/code.dto';
-import { PrivateFilesService } from 'modules/private-files/private-files.service';
+import { Languages } from '../code-executor/entity/languages.enum';
+import Code from '../code-save/code-save.entity';
+import { CodeSaveService } from '../code-save/code-save.service';
+import { CodeDTO } from '../code-save/dto/code.dto';
+import { PrivateFilesService } from '..//private-files/private-files.service';
 import { Connection, Repository } from 'typeorm';
 import { BaseService } from '../../shared/base.service';
 import { UpdateUserDTO } from './dto/updateUser.dto';
