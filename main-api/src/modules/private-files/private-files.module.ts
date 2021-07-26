@@ -3,11 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PrivateFilesService } from './private-files.service';
 import PrivateFile from './private-file.entity';
+import { PrivateFilesController } from './private-files.controller';
  
 @Module({
   imports: [
     TypeOrmModule.forFeature([PrivateFile], 'POSTGRES'),
     ConfigModule,
+  ],
+  controllers: [
+    PrivateFilesController
   ],
   providers: [PrivateFilesService],
   exports: [PrivateFilesService]

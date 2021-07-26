@@ -17,6 +17,6 @@ export class CodeExecutorController {
     @UseGuards(JwtAuthenticationGuard)
     @Post()
     async execute_python(@Req() req: RequestWithUser, @Body() body: ExecuteDTO){
-        return await this.codeExecutorService.sendCode(body.code, req.user.name, body.language, body.fileUrl)
+        return await this.codeExecutorService.sendCode(body.code, req.user.name, body.language, body.key, req.user.id)
     }
 }

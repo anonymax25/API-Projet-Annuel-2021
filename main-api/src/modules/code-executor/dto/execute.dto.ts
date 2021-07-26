@@ -11,5 +11,5 @@ export class ExecuteDTO {
     language: Languages
 
     @IsOptional()
-    fileUrl: string
+    key: string
 }

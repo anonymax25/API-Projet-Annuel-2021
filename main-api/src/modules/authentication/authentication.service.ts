@@ -27,6 +27,7 @@ export class AuthenticationService {
     newUser.email = registrationData.email
     newUser.password = await bcrypt.hash(registrationData.password, 10);
     newUser.name = registrationData.name
+    newUser.resultKey = null
 
     const createdUser = await this.usersService.save(newUser);
 
@@ -47,7 +48,7 @@ export class AuthenticationService {
       await this.verifyPassword(plainTextPassword, user.password);
       return user;
     } catch (error) {
-      throw new ForbiddenException(null, 'Wrong credentials provided')
+      throw new ForbiddenException(error, 'Wrong credentials provided')
     }
   }
 

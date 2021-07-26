@@ -1,8 +1,19 @@
 
+# exclude everything
+code-executor/code/*
+code-executor/file/*
+# exception to the rule
+!code-executor/code/.gitkeep 
+!code-executor/file/.gitkeep 
+
+
 ./code-executor/dist
 ./main-api/dist
 
-./main-api/properties/prod.*
+!./main-api/static/prod/.gitkeep
+./main-api/static/prod/*
+
+*/static/prod/*
 
 *node_modules/
 
@@ -112,3 +123,4 @@ dist
 
 # TernJS port file
 .tern-port
+main-api/properties/dev.properties
