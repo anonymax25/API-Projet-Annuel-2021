@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ExecutionModule } from './modules/execution/execution.module';
 
@@ -7,7 +6,7 @@ import { ExecutionModule } from './modules/execution/execution.module';
   imports: [
     ExecutionModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}
