@@ -10,9 +10,6 @@ code-executor/file/*
 ./code-executor/dist
 ./main-api/dist
 
-*.properties
-
-
 *node_modules/
 
 package-lock.json

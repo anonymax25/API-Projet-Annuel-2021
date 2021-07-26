@@ -5,12 +5,12 @@ export class RootController {
 
     @Get()
     get(@Req() req) {
-        return "Welcome!";
+        return "Welcome to the File Coding Main API! (GET)";
     }
     
     @Post()
     post(@Req() req) {
-        return "Welcome!";
+        return "Welcome to the File Coding Main API! (POST)";
     }
 
 }

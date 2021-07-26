@@ -11,6 +11,8 @@ import * as Joi from '@hapi/joi';
 import PrivateFile from 'modules/private-files/private-file.entity';
 import Code from 'modules/code-save/code-save.entity';
 import { TokenCode } from 'modules/code-token/code-token.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 const {
   POSTGRES_HOST,
@@ -21,18 +23,41 @@ const {
   ENV
 } = process.env
 
-const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
-  name: "POSTGRES",
-  type: 'postgres',
-  host: POSTGRES_HOST,
-  port: parseInt(POSTGRES_PORT),
-  username: POSTGRES_USER,
-  password: POSTGRES_PASSWORD,
-  database: POSTGRES_DB,
-  logging: ['error'],
-  entities: [User, PrivateFile, Code, TokenCode],
-  synchronize: true
-};
+
+let POSTGRES_DB_CONFIG: PostgresConnectionOptions
+if(ENV === 'prod'){
+  POSTGRES_DB_CONFIG = {
+    name: "POSTGRES",
+    type: 'postgres',
+    host: POSTGRES_HOST,
+    port: parseInt(POSTGRES_PORT),
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB,
+    logging: ['error'],
+    entities: [User, PrivateFile, Code, TokenCode],
+    synchronize: true,
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false
+      }
+    }
+  };
+} else {
+  POSTGRES_DB_CONFIG = {
+    name: "POSTGRES",
+    type: 'postgres',
+    host: POSTGRES_HOST,
+    port: parseInt(POSTGRES_PORT),
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB,
+    logging: ['error'],
+    entities: [User, PrivateFile, Code, TokenCode],
+    synchronize: true
+  };
+}
 
 @Module({
   imports: [
@@ -44,6 +69,7 @@ const POSTGRES_DB_CONFIG: PostgresConnectionOptions = {
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
       })
     }),
+    ServeStaticModule.forRoot({rootPath: join(__dirname, '..', ENV === 'eprod' ? './static/prod' : './static/dev')}),
     RootModule,
     AuthenticationModule,
     UsersModule,
