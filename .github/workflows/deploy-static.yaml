@@ -31,4 +31,4 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: release
-        FOLDER: main-api/dist
+        FOLDER: main-api
