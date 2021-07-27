@@ -35,11 +35,7 @@ run(f.read().hex());
         
         return this.runCode(message, formatStderr)
     }
-    
-    writeResults(buffer: Buffer){
-        //fs.writeFileSync(__dirname + '/../file/${message.name}:result${message.fileKey.split('.').pop()}', Buffer.from(resultBuffer), { flag: 'wb'})
-        
-    }
+
     async runJavascript(message: CodeExecution): Promise<Result> {
 
         message.code = 
@@ -97,7 +93,8 @@ run(f.read().hex());
                 res(null)
             })
         })
-        
+
+        const statsInput = fs.statSync(filePath)
 
         const startExecution = Date.now()
         
@@ -122,6 +119,8 @@ run(f.read().hex());
                 
                 const closeExecution = Date.now()
                 
+                const statsOutput = fs.statSync(filePath)
+
                 fs.unlinkSync(codeFilePath)
 
                 if(isTimeout){
@@ -130,7 +129,9 @@ run(f.read().hex());
                         stdout: null,
                         stderr: `Timeout of ${this.executionTimeoutMs}ms exceeded`,
                         executionTime: closeExecution - startExecution,
-                        resultKey: null
+                        resultKey: null,
+                        inputFileSize: {value: 0, unit: ""},
+                        outputFileSize: {value: 0, unit: ""}
                     }
                     resolve(result)
                 }
@@ -142,7 +143,9 @@ run(f.read().hex());
                     stdout: stdout.join(""),
                     stderr: stderr.join(""),
                     executionTime: closeExecution - startExecution,
-                    resultKey
+                    resultKey,
+                    inputFileSize: this.getFileSize(statsInput),
+                    outputFileSize: this.getFileSize(statsOutput)
                 }
 
                 //remove filename from error
@@ -155,4 +158,30 @@ run(f.read().hex());
         })
 
     }
+
+    getFileSize(stats: fs.Stats): FileSize {
+        let bitSizes = new Map<number, string>()
+        bitSizes.set(0, "b")
+        bitSizes.set(1, "Kb")
+        bitSizes.set(2, "Mb")
+        bitSizes.set(3, "Gb")
+        bitSizes.set(4, "Tb")
+        bitSizes.set(5, "Pb")
+
+        let value = stats.size
+        
+        let counter = 0;
+        while(value / 1000 > 1){
+
+            counter++;
+            value /= 1000
+        }
+
+        return {
+            value,
+            unit: bitSizes.get(counter)
+        }
+    }
 }
+
+export type FileSize = { unit: string, value: number}

@@ -46,28 +46,7 @@ export class PrivateFilesService {
     })
   }
   
-  public async deleteFile(key: string) {
-    const s3 = new S3();
-
-    console.log(key);
-    
-    let params = {
-      Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
-      Key: key
-    }
-
-    console.log(params);
-    
-    s3.deleteObject(params, (err, data) => {
-      if(err){
-        throw new InternalServerErrorException(err)
-      }
-
-      console.log(data);
-      
-
-      return true
-
-    })
+  public async deleteFile(id: number) {
+    this.privateFilesRepository.delete({ id })
   }
 }
