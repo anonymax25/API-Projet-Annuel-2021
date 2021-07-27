@@ -48,7 +48,7 @@ export class TokenCodeSaveService {
         let distance = this.levenshteinDistance(token, item.token)
         let maximalLength = token.length > item.token.length ? token.length : item.token.length
         return ( maximalLength - distance ) / maximalLength
-      }).sort(function(a, b){return b-a})[0]
+      }).sort(function(a, b){return b-a})[0] * 100
     }
 
     tokenizeJavascript(code: string): string {
