@@ -1,6 +1,7 @@
-import { HttpService, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { HttpService, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { response } from 'express';
+import Code from 'modules/code-save/code-save.entity';
 import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
 import { PrivateFilesService } from 'modules/private-files/private-files.service';
 import { CodeExecution } from './entity/code-execution';
@@ -13,6 +14,7 @@ const { CODE_EXECUTOR_URL, CODE_EXECUTOR_PORT } = process.env
 export class CodeExecutorService {
 
     private codeExecutorClient: AxiosInstance;
+    private logger: Logger = new Logger('CodeExecutorService')
 
     constructor(private httpService: HttpService,
                 private privateFilesService: PrivateFilesService,
@@ -22,22 +24,23 @@ export class CodeExecutorService {
         
     }
     
-        async sendCode(code: string, username: string,  language: Languages, key: string, userId: number,): Promise<CodeResult>{
+    async sendCode(code: Code, username: string,  language: Languages, key: string, userId: number): Promise<CodeResult> {
 
         let fileUrl = await this.privateFilesService.generatePresignedUrl(key)
 
         const url = `${CODE_EXECUTOR_URL}:${CODE_EXECUTOR_PORT}/execution`
         const body = {
-            codeExecution: new CodeExecution(username, code, language, fileUrl, key, userId)
+            codeExecution: new CodeExecution(username, code.code, language, fileUrl, key, userId)
         }
         let codeSimilarity = await this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
 
-        console.log("simil : " + JSON.stringify(codeSimilarity))
+        this.logger.log(`similarity: ${codeSimilarity}%`)
+
         try {
             const response = await this.httpService.post(url, body).toPromise();
             return new CodeResult(language, response.data, codeSimilarity)
         }catch(e){
-            throw new NotFoundException('Coudln\'t connect to code executor')
+            throw new NotFoundException(e.message)
         }
         
     }
