@@ -26,13 +26,12 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const languages_enum_1 = require("../code-executor/entity/languages.enum");
-const base_service_1 = require("../../shared/base.service");
 const typeorm_2 = require("typeorm");
 const code_token_entity_1 = require("./code-token.entity");
 const js_constants_1 = require("./utils/js-constants");
-let TokenCodeSaveService = class TokenCodeSaveService extends base_service_1.BaseService {
+const py_constants_1 = require("./utils/py-constants");
+let TokenCodeSaveService = class TokenCodeSaveService {
     constructor(tokenCodeSaveRepository, configService) {
-        super(code_token_entity_1.TokenCode);
         this.tokenCodeSaveRepository = tokenCodeSaveRepository;
         this.configService = configService;
     }
@@ -66,6 +65,12 @@ let TokenCodeSaveService = class TokenCodeSaveService extends base_service_1.Bas
                 token = this.tokenizeJavascript(code);
             if (langage === languages_enum_1.Languages.python)
                 token = this.tokenizePython(code);
+            let tokensList = yield this.tokenCodeSaveRepository.find();
+            return (yield tokensList.map((item, index) => {
+                let distance = this.levenshteinDistance(token, item.token);
+                let maximalLength = token.length > item.token.length ? token.length : item.token.length;
+                return (maximalLength - distance) / maximalLength;
+            }).sort(function (a, b) { return b - a; })[0]) * 100;
         });
     }
     tokenizeJavascript(code) {
@@ -80,7 +85,30 @@ let TokenCodeSaveService = class TokenCodeSaveService extends base_service_1.Bas
         return token;
     }
     tokenizePython(code) {
-        return "TODO";
+        let token = code.replace(py_constants_1.PyConstants.LINE_COMMENT, "")
+            .replace(py_constants_1.PyConstants.BLOCK_COMMENT, "")
+            .replace(py_constants_1.PyConstants.PRINT, "")
+            .replace(py_constants_1.PyConstants.STRING, "S")
+            .replace(py_constants_1.PyConstants.NUMBER, "N")
+            .replace(py_constants_1.PyConstants.VARS, "V")
+            .replace(py_constants_1.PyConstants.WHITESPACE, "");
+        return token;
+    }
+    levenshteinDistance(str1, str2) {
+        const track = Array(str2.length + 1).fill(null).map(() => Array(str1.length + 1).fill(null));
+        for (let i = 0; i <= str1.length; i += 1) {
+            track[0][i] = i;
+        }
+        for (let j = 0; j <= str2.length; j += 1) {
+            track[j][0] = j;
+        }
+        for (let j = 1; j <= str2.length; j += 1) {
+            for (let i = 1; i <= str1.length; i += 1) {
+                const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                track[j][i] = Math.min(track[j][i - 1] + 1, track[j - 1][i] + 1, track[j - 1][i - 1] + indicator);
+            }
+        }
+        return track[str2.length][str1.length];
     }
 };
 TokenCodeSaveService = __decorate([

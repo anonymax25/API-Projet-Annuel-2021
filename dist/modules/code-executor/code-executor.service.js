@@ -21,8 +21,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CodeExecutorService = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("axios");
-const code_token_service_1 = require("../code-token/code-token.service");
-const private_files_service_1 = require("../private-files/private-files.service");
+const code_token_service_1 = require("modules/code-token/code-token.service");
+const private_files_service_1 = require("modules/private-files/private-files.service");
 const code_execution_1 = require("./entity/code-execution");
 const code_result_1 = require("./entity/code-result");
 const { CODE_EXECUTOR_URL, CODE_EXECUTOR_PORT } = process.env;
@@ -40,10 +40,11 @@ let CodeExecutorService = class CodeExecutorService {
             const body = {
                 codeExecution: new code_execution_1.CodeExecution(username, code, language, fileUrl, key, userId)
             };
-            this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
+            let codeSimilarity = yield this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
+            console.log("simil : " + JSON.stringify(codeSimilarity));
             try {
                 const response = yield this.httpService.post(url, body).toPromise();
-                return new code_result_1.CodeResult(language, response.data);
+                return new code_result_1.CodeResult(language, response.data, codeSimilarity);
             }
             catch (e) {
                 throw new common_1.NotFoundException('Coudln\'t connect to code executor');

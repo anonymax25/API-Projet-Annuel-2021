@@ -42,9 +42,8 @@ let CodeSaveService = class CodeSaveService {
                 owner: {
                     id: ownerId
                 },
-                language
             });
-            this.tokenCodeSaveService.saveToken(ownerId, code, language);
+            yield this.tokenCodeSaveService.saveToken(ownerId, code, language);
             yield this.codeSaveRepository.save(newCode);
             return newCode;
         });

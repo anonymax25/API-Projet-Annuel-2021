@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CodeResult = void 0;
 class CodeResult {
-    constructor(language, result) {
+    constructor(language, result, similarity) {
         this.language = language;
         this.result = result;
+        this.similarity = similarity;
     }
 }
 exports.CodeResult = CodeResult;

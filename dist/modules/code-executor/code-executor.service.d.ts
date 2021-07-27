@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/common';
-import { TokenCodeSaveService } from '../code-token/code-token.service';
-import { PrivateFilesService } from '../private-files/private-files.service';
+import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
+import { PrivateFilesService } from 'modules/private-files/private-files.service';
 import { CodeResult } from './entity/code-result';
 import { Languages } from './entity/languages.enum';
 export declare class CodeExecutorService {
