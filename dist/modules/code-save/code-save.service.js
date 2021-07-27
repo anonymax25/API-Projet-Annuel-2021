@@ -34,16 +34,17 @@ let CodeSaveService = class CodeSaveService {
         this.tokenCodeSaveService = tokenCodeSaveService;
         this.configService = configService;
     }
-    saveCode(ownerId, name, code, langage) {
+    saveCode(ownerId, name, code, language) {
         return __awaiter(this, void 0, void 0, function* () {
             const newCode = this.codeSaveRepository.create({
                 name: name,
                 code: code,
                 owner: {
                     id: ownerId
-                }
+                },
+                language
             });
-            this.tokenCodeSaveService.saveToken(ownerId, code, langage);
+            this.tokenCodeSaveService.saveToken(ownerId, code, language);
             yield this.codeSaveRepository.save(newCode);
             return newCode;
         });

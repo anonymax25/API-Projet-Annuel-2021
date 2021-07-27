@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_entity_1 = require("../users/user.entity");
 const typeorm_1 = require("typeorm");
+const languages_enum_1 = require("modules/code-executor/entity/languages.enum");
 let Code = class Code extends typeorm_1.BaseEntity {
     constructor(id, name, code, owner) {
         super();
@@ -32,6 +33,10 @@ __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
 ], Code.prototype, "code", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], Code.prototype, "language", void 0);
 __decorate([
     typeorm_1.ManyToOne(() => user_entity_1.User, (owner) => owner.files),
     __metadata("design:type", user_entity_1.User)

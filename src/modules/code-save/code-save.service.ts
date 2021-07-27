@@ -18,15 +18,16 @@ export class CodeSaveService {
     private readonly configService: ConfigService
   ) {}
  
-  async saveCode(ownerId: number, name: string, code: string, langage: Languages) {
+  async saveCode(ownerId: number, name: string, code: string, language: Languages) {
     const newCode = this.codeSaveRepository.create({
       name: name,
       code: code,
       owner: {
         id: ownerId
-      }
+      },
+      language
     });
-    this.tokenCodeSaveService.saveToken(ownerId, code, langage);
+    this.tokenCodeSaveService.saveToken(ownerId, code, language);
     await this.codeSaveRepository.save(newCode);
     return newCode;
   }

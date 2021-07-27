@@ -9,7 +9,7 @@ export declare class CodeSaveService {
     private readonly tokenCodeSaveService;
     private readonly configService;
     constructor(codeSaveRepository: Repository<Code>, tokenCodeSaveService: TokenCodeSaveService, configService: ConfigService);
-    saveCode(ownerId: number, name: string, code: string, langage: Languages): Promise<Code>;
+    saveCode(ownerId: number, name: string, code: string, language: Languages): Promise<Code>;
     updateCode(code: CodeDTO | Code): Promise<Code | (CodeDTO & Code)>;
     deleteCode(id: number): Promise<import("typeorm").DeleteResult>;
 }

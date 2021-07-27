@@ -21,6 +21,7 @@ export declare class UsersController {
         id: number;
         name: string;
         code: string;
+        language: import("../code-executor/entity/languages.enum").Languages;
         owner: import("./user.entity").User;
     }[]>;
     getUserById(request: RequestWithUser, uid: number): Promise<import("./user.entity").User>;

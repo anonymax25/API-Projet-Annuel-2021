@@ -25,6 +25,7 @@ export declare class UsersService extends BaseService<User> {
         id: number;
         name: string;
         code: string;
+        language: Languages;
         owner: User;
     }[]>;
     addCode(userId: number, name: string, code: string, langage: Languages): Promise<Code>;
