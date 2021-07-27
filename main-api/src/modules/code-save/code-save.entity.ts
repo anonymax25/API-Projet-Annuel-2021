@@ -1,5 +1,6 @@
 import { User } from '../users/user.entity';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Languages } from 'modules/code-executor/entity/languages.enum';
  
 @Entity()
 class Code extends BaseEntity{
@@ -11,6 +12,9 @@ class Code extends BaseEntity{
 
   @Column()
   public code: string;
+  
+  @Column()
+  public language: Languages;
  
   @ManyToOne(() => User, (owner: User) => owner.files)
   public owner: User;
