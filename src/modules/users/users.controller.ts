@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CodeDTO } from '../code-save/dto/code.dto';
 import { PrivateFilesService } from '../private-files/private-files.service';
 import Code from '../code-save/code-save.entity';
+import { Languages } from 'modules/code-executor/entity/languages.enum';
 
 @ApiTags('user')
 @Controller('user')
@@ -28,7 +29,6 @@ export class UsersController {
     return user;
   }
 
-
   @Get('file')
   @UseGuards(JwtAuthenticationGuard)
   async getAllPrivateFiles(@Req() request: RequestWithUser) {
@@ -43,8 +43,8 @@ export class UsersController {
 
   @Get('code')
   @UseGuards(JwtAuthenticationGuard)
-  async getAllCodes(@Req() request: RequestWithUser) {
-    return this.usersService.getAllCodes(request.user.id);
+  async getAllCodes(@Req() request: RequestWithUser, @Query('language') language: Languages) {
+    return this.usersService.getAllCodesByLanguage(request.user.id, language);
   }
 
   @UseGuards(JwtAuthenticationGuard)

@@ -66,14 +66,16 @@ let UsersService = class UsersService extends base_service_1.BaseService {
             throw new common_1.NotFoundException('User with this id does not exist');
         });
     }
-    getAllCodes(userId) {
+    getAllCodesByLanguage(userId, language) {
         return __awaiter(this, void 0, void 0, function* () {
             const userWithCodes = yield this.usersRepository.findOne({
                 where: { id: userId },
                 relations: ['codes']
             });
             if (userWithCodes) {
-                return Promise.all(userWithCodes.codes.map((code) => __awaiter(this, void 0, void 0, function* () {
+                return Promise.all(userWithCodes.codes
+                    .filter(code => code.language === language)
+                    .map((code) => __awaiter(this, void 0, void 0, function* () {
                     return Object.assign({}, code);
                 })));
             }

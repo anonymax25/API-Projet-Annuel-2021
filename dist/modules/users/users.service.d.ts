@@ -21,7 +21,7 @@ export declare class UsersService extends BaseService<User> {
         key: string;
         url: string;
     }[]>;
-    getAllCodes(userId: number): Promise<{
+    getAllCodesByLanguage(userId: number, language: Languages): Promise<{
         id: number;
         name: string;
         code: string;
