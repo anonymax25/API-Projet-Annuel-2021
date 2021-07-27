@@ -26,7 +26,7 @@ export class CodeSaveService {
         id: ownerId
       }
     });
-    this.tokenCodeSaveService.saveToken(ownerId, code, langage);
+    await this.tokenCodeSaveService.saveToken(ownerId, code, langage);
     await this.codeSaveRepository.save(newCode);
     return newCode;
   }

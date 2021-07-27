@@ -1,8 +1,8 @@
 import { HttpService, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { response } from 'express';
-import { TokenCodeSaveService } from '../code-token/code-token.service';
-import { PrivateFilesService } from '../private-files/private-files.service';
+import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
+import { PrivateFilesService } from 'modules/private-files/private-files.service';
 import { CodeExecution } from './entity/code-execution';
 import { CodeResult } from './entity/code-result';
 import { Languages } from './entity/languages.enum';
@@ -30,11 +30,12 @@ export class CodeExecutorService {
         const body = {
             codeExecution: new CodeExecution(username, code, language, fileUrl, key, userId)
         }
-        this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
+        let codeSimilarity = await this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
 
+        console.log("simil : " + JSON.stringify(codeSimilarity))
         try {
             const response = await this.httpService.post(url, body).toPromise();
-            return new CodeResult(language, response.data)
+            return new CodeResult(language, response.data, codeSimilarity)
         }catch(e){
             throw new NotFoundException('Coudln\'t connect to code executor')
         }

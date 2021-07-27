@@ -1,23 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import console from "console";
 import { Languages } from "../code-executor/entity/languages.enum";
 import { BaseService } from "../../shared/base.service";
 import { Connection, getManager, Repository } from "typeorm";
 import { TokenCode } from "./code-token.entity";
 import { JsConstants } from "./utils/js-constants";
+import { PyConstants } from "./utils/py-constants";
+import { response } from "express";
 
 @Injectable()
-export class TokenCodeSaveService extends BaseService<TokenCode>{
+export class TokenCodeSaveService {
     constructor(
       @InjectRepository(TokenCode)
       @InjectConnection()
       private tokenCodeSaveRepository: Repository<TokenCode>,
       private readonly configService: ConfigService
-    ) {
-      super(TokenCode);
-    }
+    ) { }
    
     async saveToken(ownerId: number, code: string, langage: string) {
       var token;
@@ -30,6 +29,7 @@ export class TokenCodeSaveService extends BaseService<TokenCode>{
           id: ownerId
         }
       });
+
       await this.tokenCodeSaveRepository.save(newCode);
       return newCode;
     }
@@ -40,17 +40,15 @@ export class TokenCodeSaveService extends BaseService<TokenCode>{
     }
 
     async getLowestSimilarityDistance(code: string, langage: string) {
-      var token;
+      var token: string;
       if(langage===Languages.javascript) token = this.tokenizeJavascript(code);
       if(langage===Languages.python) token = this.tokenizePython(code);
-      // let response = await this.tokenCodeSaveRepository
-      //                     .createQueryBuilder("tokenCode")
-      //                     .select(`levenshtein(tokenCode.token, '${token}')`)
-      //                     .where("tokenCode.langage = :langage", {langage: langage})
-      //                     //.andWhere(`levenshtein(tokenCode.token, '${token}') <= 10`)
-      //                     .addOrderBy(`levenshtein(tokenCode.token, '${token}')`)
-      //                     .limit(1).printSql;
-      //console.log(response);
+      let tokensList = await this.tokenCodeSaveRepository.find()
+      return await tokensList.map((item, index) => {
+        let distance = this.levenshteinDistance(token, item.token)
+        let maximalLength = token.length > item.token.length ? token.length : item.token.length
+        return ( maximalLength - distance ) / maximalLength
+      }).sort(function(a, b){return b-a})[0]
     }
 
     tokenizeJavascript(code: string): string {
@@ -66,6 +64,35 @@ export class TokenCodeSaveService extends BaseService<TokenCode>{
     }
 
     tokenizePython(code: string): string {
-        return "TODO"
+        let token = code.replace(PyConstants.LINE_COMMENT, "")
+                          .replace(PyConstants.BLOCK_COMMENT, "")
+                          .replace(PyConstants.PRINT, "")
+                          .replace(PyConstants.STRING, "S")
+                          .replace(PyConstants.NUMBER, "N")
+                          .replace(PyConstants.VARS, "V")
+                          .replace(PyConstants.WHITESPACE, "")
+        return token;
     }
+
+    levenshteinDistance(str1: string, str2:string) : number {
+      const track = Array(str2.length + 1).fill(null).map(() =>
+          Array(str1.length + 1).fill(null));
+          for (let i = 0; i <= str1.length; i += 1) {
+              track[0][i] = i;
+          }
+          for (let j = 0; j <= str2.length; j += 1) {
+              track[j][0] = j;
+          }
+          for (let j = 1; j <= str2.length; j += 1) {
+              for (let i = 1; i <= str1.length; i += 1) {
+                  const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+                  track[j][i] = Math.min(
+                      track[j][i - 1] + 1,
+                      track[j - 1][i] + 1,
+                      track[j - 1][i - 1] + indicator,
+                  );
+              }
+          }
+      return track[str2.length][str1.length];
   }
+}
