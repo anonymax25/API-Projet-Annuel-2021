@@ -1,6 +1,7 @@
-name: Build and Release
+name: Build Release Main API
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
