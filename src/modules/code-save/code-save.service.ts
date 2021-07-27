@@ -28,9 +28,9 @@ export class CodeSaveService {
       language
     });
 
-    await this.tokenCodeSaveService.saveToken(ownerId, code, language);
-    await this.codeSaveRepository.save(newCode);
-    return newCode;
+    const codeDB: Code = await this.codeSaveRepository.save(newCode);
+    await this.tokenCodeSaveService.saveToken(ownerId, codeDB, language);
+    return codeDB;
   }
   
   async updateCode(code: CodeDTO | Code) {

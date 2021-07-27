@@ -31,6 +31,7 @@ let CodeExecutorService = class CodeExecutorService {
         this.httpService = httpService;
         this.privateFilesService = privateFilesService;
         this.tokenCodeSaveService = tokenCodeSaveService;
+        this.logger = new common_1.Logger('CodeExecutorService');
         this.codeExecutorClient = axios_1.default.create();
     }
     sendCode(code, username, language, key, userId) {
@@ -38,16 +39,16 @@ let CodeExecutorService = class CodeExecutorService {
             let fileUrl = yield this.privateFilesService.generatePresignedUrl(key);
             const url = `${CODE_EXECUTOR_URL}:${CODE_EXECUTOR_PORT}/execution`;
             const body = {
-                codeExecution: new code_execution_1.CodeExecution(username, code, language, fileUrl, key, userId)
+                codeExecution: new code_execution_1.CodeExecution(username, code.code, language, fileUrl, key, userId)
             };
             let codeSimilarity = yield this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
-            console.log("simil : " + JSON.stringify(codeSimilarity));
+            this.logger.log(`similarity: ${codeSimilarity}%`);
             try {
                 const response = yield this.httpService.post(url, body).toPromise();
                 return new code_result_1.CodeResult(language, response.data, codeSimilarity);
             }
             catch (e) {
-                throw new common_1.NotFoundException('Coudln\'t connect to code executor');
+                throw new common_1.NotFoundException(e.message);
             }
         });
     }

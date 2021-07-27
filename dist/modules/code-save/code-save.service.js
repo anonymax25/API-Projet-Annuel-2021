@@ -44,9 +44,9 @@ let CodeSaveService = class CodeSaveService {
                 },
                 language
             });
-            yield this.tokenCodeSaveService.saveToken(ownerId, code, language);
-            yield this.codeSaveRepository.save(newCode);
-            return newCode;
+            const codeDB = yield this.codeSaveRepository.save(newCode);
+            yield this.tokenCodeSaveService.saveToken(ownerId, codeDB, language);
+            return codeDB;
         });
     }
     updateCode(code) {

@@ -11,12 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExecuteDTO = void 0;
 const class_validator_1 = require("class-validator");
+const code_save_entity_1 = require("modules/code-save/code-save.entity");
 const languages_enum_1 = require("../entity/languages.enum");
 class ExecuteDTO {
 }
 __decorate([
     class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
+    __metadata("design:type", code_save_entity_1.default)
 ], ExecuteDTO.prototype, "code", void 0);
 __decorate([
     class_validator_1.IsNotEmpty(),

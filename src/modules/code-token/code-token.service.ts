@@ -3,11 +3,12 @@ import { ConfigService } from "@nestjs/config";
 import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
 import { Languages } from "../code-executor/entity/languages.enum";
 import { BaseService } from "../../shared/base.service";
-import { Connection, getManager, Repository } from "typeorm";
+import { Connection, getManager, Not, Repository } from "typeorm";
 import { TokenCode } from "./code-token.entity";
 import { JsConstants } from "./utils/js-constants";
 import { PyConstants } from "./utils/py-constants";
 import { response } from "express";
+import Code from "modules/code-save/code-save.entity";
 
 @Injectable()
 export class TokenCodeSaveService {
@@ -18,16 +19,18 @@ export class TokenCodeSaveService {
       private readonly configService: ConfigService
     ) { }
    
-    async saveToken(ownerId: number, code: string, langage: string) {
+    async saveToken(ownerId: number, code: Code, langage: string) {
       var token;
-      if(langage===Languages.javascript) token = this.tokenizeJavascript(code);
-      if(langage===Languages.python) token = this.tokenizePython(code);
+      if(langage===Languages.javascript) token = this.tokenizeJavascript(code.code);
+      if(langage===Languages.python) token = this.tokenizePython(code.code);
+
       const newCode = this.tokenCodeSaveRepository.create({
         token: token,
         langage: langage,
         owner: {
           id: ownerId
-        }
+        },
+        codeId: code.id
       });
 
       await this.tokenCodeSaveRepository.save(newCode);
@@ -39,11 +42,19 @@ export class TokenCodeSaveService {
       return await this.tokenCodeSaveRepository.delete({id});
     }
 
-    async getLowestSimilarityDistance(code: string, langage: string) {
+    async getLowestSimilarityDistance(code: Code, langage: string) {
       var token: string;
-      if(langage===Languages.javascript) token = this.tokenizeJavascript(code);
-      if(langage===Languages.python) token = this.tokenizePython(code);
-      let tokensList = await this.tokenCodeSaveRepository.find()
+
+      if(langage===Languages.javascript) token = this.tokenizeJavascript(code.code);
+      if(langage===Languages.python) token = this.tokenizePython(code.code);
+      
+      let tokensList = await this.tokenCodeSaveRepository.find({
+        langage: code.language,
+        codeId: Not(code.id)
+      })
+
+      if(!tokensList.length) return 0;
+
       return await tokensList.map((item, index) => {
         let distance = this.levenshteinDistance(token, item.token)
         let maximalLength = token.length > item.token.length ? token.length : item.token.length

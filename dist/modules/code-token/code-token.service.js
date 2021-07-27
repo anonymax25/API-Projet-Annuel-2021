@@ -39,15 +39,16 @@ let TokenCodeSaveService = class TokenCodeSaveService {
         return __awaiter(this, void 0, void 0, function* () {
             var token;
             if (langage === languages_enum_1.Languages.javascript)
-                token = this.tokenizeJavascript(code);
+                token = this.tokenizeJavascript(code.code);
             if (langage === languages_enum_1.Languages.python)
-                token = this.tokenizePython(code);
+                token = this.tokenizePython(code.code);
             const newCode = this.tokenCodeSaveRepository.create({
                 token: token,
                 langage: langage,
                 owner: {
                     id: ownerId
-                }
+                },
+                codeId: code.id
             });
             yield this.tokenCodeSaveRepository.save(newCode);
             return newCode;
@@ -62,10 +63,15 @@ let TokenCodeSaveService = class TokenCodeSaveService {
         return __awaiter(this, void 0, void 0, function* () {
             var token;
             if (langage === languages_enum_1.Languages.javascript)
-                token = this.tokenizeJavascript(code);
+                token = this.tokenizeJavascript(code.code);
             if (langage === languages_enum_1.Languages.python)
-                token = this.tokenizePython(code);
-            let tokensList = yield this.tokenCodeSaveRepository.find();
+                token = this.tokenizePython(code.code);
+            let tokensList = yield this.tokenCodeSaveRepository.find({
+                langage: code.language,
+                codeId: typeorm_2.Not(code.id)
+            });
+            if (!tokensList.length)
+                return 0;
             return (yield tokensList.map((item, index) => {
                 let distance = this.levenshteinDistance(token, item.token);
                 let maximalLength = token.length > item.token.length ? token.length : item.token.length;

@@ -4,5 +4,6 @@ export declare class TokenCode extends BaseEntity {
     id: number;
     token: string;
     langage: string;
+    codeId: number;
     owner: User;
 }

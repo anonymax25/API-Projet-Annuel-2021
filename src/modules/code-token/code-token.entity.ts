@@ -11,6 +11,9 @@ export class TokenCode extends BaseEntity{
 
   @Column()
   public langage: string;
+  
+  @Column()
+  public codeId: number;
  
   @ManyToOne(() => User, (owner: User) => owner.files)
   public owner: User;

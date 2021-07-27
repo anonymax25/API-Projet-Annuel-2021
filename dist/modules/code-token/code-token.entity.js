@@ -27,6 +27,10 @@ __decorate([
     __metadata("design:type", String)
 ], TokenCode.prototype, "langage", void 0);
 __decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], TokenCode.prototype, "codeId", void 0);
+__decorate([
     typeorm_1.ManyToOne(() => user_entity_1.User, (owner) => owner.files),
     __metadata("design:type", user_entity_1.User)
 ], TokenCode.prototype, "owner", void 0);
