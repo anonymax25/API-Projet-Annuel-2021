@@ -8,5 +8,5 @@ export declare class PrivateFilesService {
     constructor(privateFilesRepository: Repository<PrivateFile>, configService: ConfigService);
     uploadPrivateFile(dataBuffer: Buffer, ownerId: number, filename: string, isResult: boolean): Promise<PrivateFile>;
     generatePresignedUrl(key: string): Promise<string>;
-    deleteFile(key: string): Promise<void>;
+    deleteFile(id: number): Promise<void>;
 }

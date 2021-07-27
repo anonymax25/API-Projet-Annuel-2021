@@ -4,4 +4,10 @@ export declare class Result {
     stderr: string;
     executionTime: number;
     resultKey: string;
+    inputFileSize: FileSize;
+    outputFileSize: FileSize;
+}
+export declare class FileSize {
+    unit: string;
+    value: number;
 }

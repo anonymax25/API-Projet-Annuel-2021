@@ -65,22 +65,9 @@ let PrivateFilesService = class PrivateFilesService {
             });
         });
     }
-    deleteFile(key) {
+    deleteFile(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const s3 = new aws_sdk_1.S3();
-            console.log(key);
-            let params = {
-                Bucket: this.configService.get('AWS_PRIVATE_BUCKET_NAME'),
-                Key: key
-            };
-            console.log(params);
-            s3.deleteObject(params, (err, data) => {
-                if (err) {
-                    throw new common_1.InternalServerErrorException(err);
-                }
-                console.log(data);
-                return true;
-            });
+            this.privateFilesRepository.delete({ id });
         });
     }
 };

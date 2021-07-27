@@ -48,9 +48,9 @@ let UsersController = class UsersController {
             return this.usersService.getAllPrivateFiles(request.user.id);
         });
     }
-    deletePrivateFiles(request, key) {
+    deletePrivateFiles(request, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.privateFilesService.deleteFile(key);
+            return this.privateFilesService.deleteFile(id);
         });
     }
     getAllCodes(request) {
@@ -127,11 +127,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllPrivateFiles", null);
 __decorate([
-    common_1.Delete('file/:key'),
+    common_1.Delete('file/:id'),
     common_1.UseGuards(jwt_authentication_guard_1.default),
-    __param(0, common_1.Req()), __param(1, common_1.Param('key')),
+    __param(0, common_1.Req()), __param(1, common_1.Param('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object, Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deletePrivateFiles", null);
 __decorate([

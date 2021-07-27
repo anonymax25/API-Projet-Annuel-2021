@@ -35,10 +35,10 @@ export class UsersController {
     return this.usersService.getAllPrivateFiles(request.user.id);
   }
   
-  @Delete('file/:key')
+  @Delete('file/:id')
   @UseGuards(JwtAuthenticationGuard)
-  async deletePrivateFiles(@Req() request: RequestWithUser, @Param('key') key: string) {
-    return this.privateFilesService.deleteFile(key)
+  async deletePrivateFiles(@Req() request: RequestWithUser, @Param('id') id: number) {
+    return this.privateFilesService.deleteFile(id)
   }
 
   @Get('code')
