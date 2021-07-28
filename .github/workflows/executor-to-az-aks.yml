@@ -10,18 +10,16 @@ on:
 
 # Environment variables available to all jobs and steps in this workflow
 env:
+  PORT: 3001 
   GITHUB_SHA: ${{ github.sha }}
   REGISTRY_HOSTNAME: .azurecr.io
   IMAGE_NAME: executor
   REGISTRY_NAME: ${{ secrets.REGISTRY_NAME }}
   REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-
   AKS_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
   AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
   DEPLOYMENT_NAME: executor
   VERSION: v1
-
-  PORT: 3001 
 
 jobs:
   setup-build-publish-deploy:
@@ -32,7 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # Download and Install AZURE CLOUD CLI
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -50,20 +47,20 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
+      - name: Build and push executor
         uses: docker/build-push-action@v2
         with:
           context: ./code-executor
           push: true
           tags: natin56y/executor:v1
 
-      # Deploy the Docker image to the ACR cluster
-      # - name: Deploy to ACR
-      #   run: |
-      #     az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_CLUSTER_NAME
-      #     kubectl config current-context
-      #     kubectl create deployment $DEPLOYMENT_NAME --image=$REGISTRY_NAME/$IMAGE_NAME:$VERSION --dry-run=client -o yaml > deployment.yaml
-      #     kubectl apply -f deployment.yaml
-      #     kubectl create service loadbalancer $DEPLOYMENT_NAME --tcp=80:$PORT --dry-run=client -o yaml > service.yaml
-      #     kubectl apply -f service.yaml
+      # Deploy the Docker image to the AKS cluster
+      - name: Deploy to AKS
+        run: |
+          az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_CLUSTER_NAME
+          kubectl config current-context
+          kubectl create deployment $DEPLOYMENT_NAME --image=$REGISTRY_NAME/$IMAGE_NAME:$VERSION --dry-run=client -o yaml > deployment.yaml
+          kubectl apply -f deployment.yaml
+          kubectl create service loadbalancer $DEPLOYMENT_NAME --tcp=80:$PORT --dry-run=client -o yaml > service.yaml
+          kubectl apply -f service.yaml
 
