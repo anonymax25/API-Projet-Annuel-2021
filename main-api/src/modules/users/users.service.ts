@@ -72,8 +72,8 @@ export class UsersService extends BaseService<User>{
     throw new NotFoundException('User with this id does not exist');
   }
 
-  async addCode(userId: number, name: string, code: string, langage: Languages) {
-    return this.codeSaveService.saveCode(userId, name, code, langage);
+  async addCode(userId: number, code: CodeDTO) {
+    return this.codeSaveService.saveCode(userId, code);
   }
   
   async updateCode(code: CodeDTO | Code) {

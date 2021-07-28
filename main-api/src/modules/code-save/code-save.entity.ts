@@ -15,6 +15,9 @@ class Code extends BaseEntity{
   
   @Column()
   public language: Languages;
+  
+  @Column()
+  public isPrivate: boolean;
  
   @ManyToOne(() => User, (owner: User) => owner.files)
   public owner: User;
