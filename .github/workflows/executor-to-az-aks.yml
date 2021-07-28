@@ -55,7 +55,7 @@ jobs:
         with:
           context: ./code-executor
           push: true
-          tags: $REGISTRY_NAME/$IMAGE_NAME:$VERSION
+          tags: natin56y/executor:v1
 
       # Deploy the Docker image to the ACR cluster
       # - name: Deploy to ACR
