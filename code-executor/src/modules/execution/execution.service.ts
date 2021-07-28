@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import * as fs from "fs";
 import * as https from "https";
 
@@ -13,6 +13,8 @@ const { EXEC_TIMEOUT } = process.env
 
 @Injectable()
 export class ExecutionService {
+
+    logger: Logger = new Logger("Execution");
 
     constructor(private fileService: FileService){}
 
@@ -74,6 +76,9 @@ run(f.read().hex());
       };
       
     async runCode(codeExecution: CodeExecution, formatStderr: (stderr: string) => string): Promise<Result> {
+
+        this.logger.log(`Start running code for ${codeExecution.userId}`);
+        
 
         let stdout: string[] = [];
         let stderr: string[] = [];
@@ -137,6 +142,9 @@ run(f.read().hex());
 
                 await this.fileService.uploadFile(resultKey, codeExecution.userId)
                 
+                this.logger.log(`uploaded result for ${codeExecution.userId}`);
+
+
                 let result: Result = {
                     code,
                     stdout: stdout.join(""),
@@ -151,6 +159,8 @@ run(f.read().hex());
                 if(result.stderr){
                     result.stderr = formatStderr(result.stderr)
                 }
+
+                this.logger.log(`Finished running code for ${codeExecution.userId}`);
 
                 resolve(result)
             })
