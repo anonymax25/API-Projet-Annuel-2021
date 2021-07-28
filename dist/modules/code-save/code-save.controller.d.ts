@@ -1,4 +1,4 @@
-import { Languages } from 'modules/code-executor/entity/languages.enum';
+import { Languages } from '../code-executor/entity/languages.enum';
 import RequestWithUser from '../authentication/interface/requestWithUser.interface';
 import { CodeSaveService } from './code-save.service';
 export declare class CodeSaveController {

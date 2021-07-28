@@ -1,9 +1,9 @@
 import { HttpService, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { response } from 'express';
-import Code from 'modules/code-save/code-save.entity';
-import { TokenCodeSaveService } from 'modules/code-token/code-token.service';
-import { PrivateFilesService } from 'modules/private-files/private-files.service';
+import Code from '../code-save/code-save.entity';
+import { TokenCodeSaveService } from '../code-token/code-token.service';
+import { PrivateFilesService } from '../private-files/private-files.service';
 import { CodeExecution } from './entity/code-execution';
 import { CodeResult } from './entity/code-result';
 import { Languages } from './entity/languages.enum';

@@ -31,13 +31,10 @@ const logger = new common_1.Logger('Init');
 const { ENV, PORT, API_VERSION } = process.env;
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (ENV === 'prod') {
-            logger.log("Download client start");
-            yield downloadClient();
-            logger.log("Download client finished");
-        }
         const allowedResponseOrigins = [
-            "http://localhost:3000"
+            "http://localhost:3000",
+            "http://localhost:3003",
+            "http://ec2-15-188-232-65.eu-west-3.compute.amazonaws.com"
         ];
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
         app.setGlobalPrefix(`api/v${API_VERSION}`);

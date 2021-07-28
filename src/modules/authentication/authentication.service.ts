@@ -25,7 +25,9 @@ export class AuthenticationService {
 
     let newUser = new User()
     newUser.email = registrationData.email
-    newUser.password = await bcrypt.hash(registrationData.password, 10);
+    newUser.password =  require("crypto").createHmac("sha256", "password")
+    .update(registrationData.password)
+    .digest("hex");
     newUser.name = registrationData.name
     newUser.resultKey = null
 

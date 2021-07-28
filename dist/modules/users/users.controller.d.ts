@@ -5,7 +5,6 @@ import { UpdateUserDTO } from './dto/updateUser.dto';
 import { CodeDTO } from '../code-save/dto/code.dto';
 import { PrivateFilesService } from '../private-files/private-files.service';
 import Code from '../code-save/code-save.entity';
-import { Languages } from 'modules/code-executor/entity/languages.enum';
 export declare class UsersController {
     private readonly usersService;
     private readonly privateFilesService;
@@ -22,7 +21,7 @@ export declare class UsersController {
         id: number;
         name: string;
         code: string;
-        language: Languages;
+        language: import("../code-executor/entity/languages.enum").Languages;
         isPrivate: boolean;
         owner: import("./user.entity").User;
     }[]>;

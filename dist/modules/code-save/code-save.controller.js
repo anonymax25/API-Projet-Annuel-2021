@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CodeSaveController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const languages_enum_1 = require("modules/code-executor/entity/languages.enum");
+const languages_enum_1 = require("../code-executor/entity/languages.enum");
 const code_save_service_1 = require("./code-save.service");
 let CodeSaveController = class CodeSaveController {
     constructor(codeSaveService) {

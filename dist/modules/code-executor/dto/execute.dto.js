@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExecuteDTO = void 0;
 const class_validator_1 = require("class-validator");
-const code_save_entity_1 = require("modules/code-save/code-save.entity");
+const code_save_entity_1 = require("../../code-save/code-save.entity");
 const languages_enum_1 = require("../entity/languages.enum");
 class ExecuteDTO {
 }

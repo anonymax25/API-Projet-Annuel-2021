@@ -39,7 +39,9 @@ let AuthenticationService = class AuthenticationService {
                 throw new common_1.ConflictException(null, "A User with this name already exists");
             let newUser = new user_entity_1.User();
             newUser.email = registrationData.email;
-            newUser.password = yield bcrypt.hash(registrationData.password, 10);
+            newUser.password = require("crypto").createHmac("sha256", "password")
+                .update(registrationData.password)
+                .digest("hex");
             newUser.name = registrationData.name;
             newUser.resultKey = null;
             const createdUser = yield this.usersService.save(newUser);

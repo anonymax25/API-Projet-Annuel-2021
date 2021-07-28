@@ -24,21 +24,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthenticationController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const users_service_1 = require("../users/users.service");
 const authentication_service_1 = require("./authentication.service");
 const register_dto_1 = require("./dto/register.dto");
-const local_authentication_guard_1 = require("./passport/local-authentication.guard");
+const login_dto_1 = require("./dto/login.dto");
 let AuthenticationController = class AuthenticationController {
-    constructor(authenticationService) {
+    constructor(authenticationService, usersService) {
         this.authenticationService = authenticationService;
+        this.usersService = usersService;
     }
     register(registrationData) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.authenticationService.register(registrationData);
         });
     }
-    login(request) {
+    login(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.authenticationService.login(request.user);
+            let user = yield this.usersService.findOne({ email: body.email });
+            if (!user) {
+                throw new common_1.ForbiddenException("wrong email, user not found");
+            }
+            const hasedTest = require("crypto").createHmac("sha256", "password")
+                .update(body.password)
+                .digest("hex");
+            if (hasedTest !== user.password) {
+                throw new common_1.ForbiddenException("wrong password");
+            }
+            return this.authenticationService.login(user);
         });
     }
 };
@@ -50,18 +62,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "register", null);
 __decorate([
-    common_1.UseGuards(local_authentication_guard_1.LocalAuthenticationGuard),
     common_1.Post('login'),
-    __param(0, common_1.Req()),
+    __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [login_dto_1.default]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "login", null);
 AuthenticationController = __decorate([
     swagger_1.ApiTags('authentication'),
     common_1.Controller('authentication'),
     common_1.UseInterceptors(common_1.ClassSerializerInterceptor),
-    __metadata("design:paramtypes", [authentication_service_1.AuthenticationService])
+    __metadata("design:paramtypes", [authentication_service_1.AuthenticationService,
+        users_service_1.UsersService])
 ], AuthenticationController);
 exports.AuthenticationController = AuthenticationController;
 //# sourceMappingURL=authentication.controller.js.map
