@@ -15,4 +15,4 @@ RUN npm i
 
 COPY . .
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "npm", "run", "start" ]
