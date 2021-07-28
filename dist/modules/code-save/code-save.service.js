@@ -52,12 +52,16 @@ let CodeSaveService = class CodeSaveService {
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.codeSaveRepository.find({ isPrivate: false });
+            return this.codeSaveRepository.find({ where: { isPrivate: false }, relations: ['owner'] });
         });
     }
     findByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.codeSaveRepository.find({ name });
+            return this.codeSaveRepository
+                .createQueryBuilder("code")
+                .leftJoinAndSelect('code.owner', 'o')
+                .where("code.name like :name and code.isPrivate = :isPrivate", { name: `%${name}%`, isPrivate: false })
+                .getMany();
         });
     }
     updateCode(code) {

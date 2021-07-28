@@ -74,7 +74,7 @@ let UsersService = class UsersService extends base_service_1.BaseService {
             });
             if (userWithCodes) {
                 return Promise.all(userWithCodes.codes
-                    .filter(code => code.language === language)
+                    .filter(code => language != "undefined" ? code.language === language : true)
                     .map((code) => __awaiter(this, void 0, void 0, function* () {
                     return Object.assign({}, code);
                 })));

@@ -76,10 +76,6 @@ let TokenCodeSaveService = class TokenCodeSaveService {
                 };
             }
             return yield tokensList
-                .map(i => {
-                console.log(i);
-                return i;
-            })
                 .map((item, index) => {
                 let distance = this.levenshteinDistance(token, item.token);
                 let maximalLength = token.length > item.token.length ? token.length : item.token.length;

@@ -18,7 +18,7 @@ export declare class UsersController {
         url: string;
     }[]>;
     deletePrivateFiles(request: RequestWithUser, id: number): Promise<void>;
-    getAllCodes(request: RequestWithUser, language: Languages): Promise<{
+    getAllCodes(request: RequestWithUser, language: string): Promise<{
         id: number;
         name: string;
         code: string;

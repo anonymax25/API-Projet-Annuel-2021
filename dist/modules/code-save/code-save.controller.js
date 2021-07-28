@@ -25,7 +25,6 @@ exports.CodeSaveController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const languages_enum_1 = require("modules/code-executor/entity/languages.enum");
-const jwt_authentication_guard_1 = require("../authentication/passport/jwt-authentication.guard");
 const code_save_service_1 = require("./code-save.service");
 let CodeSaveController = class CodeSaveController {
     constructor(codeSaveService) {
@@ -44,7 +43,6 @@ let CodeSaveController = class CodeSaveController {
 };
 __decorate([
     common_1.Get('code'),
-    common_1.UseGuards(jwt_authentication_guard_1.default),
     __param(0, common_1.Req()), __param(1, common_1.Query('name')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
@@ -52,7 +50,6 @@ __decorate([
 ], CodeSaveController.prototype, "getCodesByName", null);
 __decorate([
     common_1.Get('codes'),
-    common_1.UseGuards(jwt_authentication_guard_1.default),
     __param(0, common_1.Req()), __param(1, common_1.Query('language')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),

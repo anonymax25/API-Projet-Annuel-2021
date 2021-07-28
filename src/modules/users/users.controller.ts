@@ -43,7 +43,7 @@ export class UsersController {
 
   @Get('code')
   @UseGuards(JwtAuthenticationGuard)
-  async getAllCodes(@Req() request: RequestWithUser, @Query('language') language: Languages) {
+  async getAllCodes(@Req() request: RequestWithUser, @Query('language') language: string) {
     return this.usersService.getAllCodesByLanguage(request.user.id, language);
   }
 

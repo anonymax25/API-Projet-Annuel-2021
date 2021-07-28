@@ -35,11 +35,15 @@ export class CodeSaveService {
   }
 
   async findAll(){
-    return this.codeSaveRepository.find({isPrivate: false});
+    return this.codeSaveRepository.find({where: {isPrivate: false}, relations: ['owner']});
   }
 
   async findByName(name: string){
-    return this.codeSaveRepository.find({name});
+    return this.codeSaveRepository
+      .createQueryBuilder("code")
+      .leftJoinAndSelect('code.owner', 'o')
+      .where("code.name like :name and code.isPrivate = :isPrivate", { name:`%${name}%`, isPrivate: false })
+      .getMany();
   }
   
   async updateCode(code: CodeDTO | Code) {
