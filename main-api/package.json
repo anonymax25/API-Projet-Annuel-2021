@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
-    "start": "ENV=prod node dist/main.js",
+    "start": "npm run build:prod && ENV=prod node dist/main.js",
     "start:dev": "nodemon",
     "start:prod": "npm run start",
     "build:prod": "rimraf dist && tsc",
