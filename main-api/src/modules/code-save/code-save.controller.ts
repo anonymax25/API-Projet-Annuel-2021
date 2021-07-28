@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Languages } from 'modules/code-executor/entity/languages.enum';
+import { Languages } from '../code-executor/entity/languages.enum';
 import RequestWithUser from '../authentication/interface/requestWithUser.interface';
 import JwtAuthenticationGuard from '../authentication/passport/jwt-authentication.guard';
 import { CodeSaveService } from './code-save.service';

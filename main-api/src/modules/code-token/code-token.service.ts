@@ -8,8 +8,8 @@ import { TokenCode } from "./code-token.entity";
 import { JsConstants } from "./utils/js-constants";
 import { PyConstants } from "./utils/py-constants";
 import { response } from "express";
-import Code from "modules/code-save/code-save.entity";
-import { CodeSimilarity } from "modules/code-executor/entity/code-result";
+import Code from "../code-save/code-save.entity";
+import { CodeSimilarity } from "../code-executor/entity/code-result";
 
 @Injectable()
 export class TokenCodeSaveService {

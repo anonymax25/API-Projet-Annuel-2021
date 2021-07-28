@@ -2,8 +2,11 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios from 'axios';
 import * as fs from 'fs';
 import * as FormData from "form-data";
-import { AuthenticationService, Token } from './authentication.service';
+import { AuthenticationService, LoginModel, Token } from './authentication.service';
 import { config } from 'src/main';
+
+const { ENV, MAIN_API_URL, MAIN_API_EMAIL, MAIN_API_PASSWORD } = process.env
+
 
 @Injectable()
 export class FileService {
@@ -11,8 +14,11 @@ export class FileService {
     constructor(private authenticationService: AuthenticationService){}
 
     async uploadFile(key: string, userId: number){
-
-        const token: Token = await this.authenticationService.login(config.mainApiConfig)
+        const mainApiConfig: LoginModel = {
+            email: MAIN_API_EMAIL,
+            password: MAIN_API_PASSWORD
+        }
+        const token: Token = await this.authenticationService.login(mainApiConfig)
 
         const form = new FormData();
         form.append('file', fs.createReadStream(`./file/${key}`));

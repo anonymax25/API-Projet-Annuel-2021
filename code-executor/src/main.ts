@@ -1,3 +1,4 @@
+import './initEnv';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
@@ -5,7 +6,7 @@ import { AppModule } from './app.module';
 
 
 const logger = new Logger('Init')
-const PORT = 3001
+const { PORT } = process.env
 
 async function bootstrap() {
 

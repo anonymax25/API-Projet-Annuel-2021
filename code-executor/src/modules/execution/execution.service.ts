@@ -2,20 +2,19 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import * as fs from "fs";
 import * as https from "https";
 
-import { spawn, exec } from 'child_process';
+import { spawn } from 'child_process';
 import { Result } from './entity/result';
-import { Languages } from './entity/languages.enum';
 import { Extensions } from '../../entity/extensions.enum';
 import { RunCommand } from '../../entity/run-command.enum';
 import { CodeExecution } from './entity/code-execution';
-import { config } from 'src/main';
 import { FileService } from './file.service';
+
+const { EXEC_TIMEOUT } = process.env
+
 @Injectable()
 export class ExecutionService {
 
     constructor(private fileService: FileService){}
-
-    executionTimeoutMs: number = config.execution_timeout;
 
     async runPython(message: CodeExecution): Promise<Result> {
         
@@ -101,7 +100,7 @@ run(f.read().hex());
         setTimeout(() => {
            isTimeout = true
            node.kill();
-        }, this.executionTimeoutMs)
+        }, parseInt(EXEC_TIMEOUT))
         
         const node = spawn(RunCommand[codeExecution.language], [codeFilePath]);
 
@@ -127,7 +126,7 @@ run(f.read().hex());
                     let result: Result = {
                         code: null,
                         stdout: null,
-                        stderr: `Timeout of ${this.executionTimeoutMs}ms exceeded`,
+                        stderr: `Timeout of ${EXEC_TIMEOUT}ms exceeded`,
                         executionTime: closeExecution - startExecution,
                         resultKey: null,
                         inputFileSize: {value: 0, unit: ""},

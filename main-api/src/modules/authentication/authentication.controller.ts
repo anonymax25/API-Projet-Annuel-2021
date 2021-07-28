@@ -5,20 +5,23 @@ import {
   Post,
   UseGuards, 
   ClassSerializerInterceptor, 
-  UseInterceptors
+  UseInterceptors,
+  ForbiddenException
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { UsersService } from '../users/users.service';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/register.dto';
-import RequestWithUser from './interface/requestWithUser.interface';
-import { LocalAuthenticationGuard } from './passport/local-authentication.guard';
+import * as bcrypt from 'bcrypt';
+import LoginDto from './dto/login.dto';
 
 @ApiTags('authentication')
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {
   constructor(
-    private readonly authenticationService: AuthenticationService
+    private readonly authenticationService: AuthenticationService,
+    private readonly usersService: UsersService
 
   ) {}
 
@@ -27,9 +30,22 @@ export class AuthenticationController {
     return this.authenticationService.register(registrationData);
   }
 
-  @UseGuards(LocalAuthenticationGuard)
   @Post('login')
-  async login(@Req() request: RequestWithUser) {
-    return this.authenticationService.login(request.user)
+  async login(@Body() body: LoginDto) {
+    
+    let user = await this.usersService.findOne({email: body.email});
+    if(!user){
+      throw new ForbiddenException("wrong email, user not found")
+    }
+
+    const hasedTest = require("crypto").createHmac("sha256", "password")
+      .update(body.password)
+      .digest("hex");
+    
+    if(hasedTest !== user.password){
+      throw new ForbiddenException("wrong password")
+    }
+
+    return this.authenticationService.login(user)
   }
 }

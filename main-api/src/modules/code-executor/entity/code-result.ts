@@ -1,4 +1,4 @@
-import { TokenCode } from "modules/code-token/code-token.entity";
+import { TokenCode } from "../../code-token/code-token.entity";
 import { Languages } from "./languages.enum";
 import { Result } from "./result";
 

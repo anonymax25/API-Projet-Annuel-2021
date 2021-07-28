@@ -1,14 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { url } from 'inspector';
 
+const { ENV, MAIN_API_URL } = process.env
 @Injectable()
 export class AuthenticationService {
 
     async login(data: LoginModel): Promise<Token> {
-        const url = "http://localhost:3030/api/v1/authentication/login"
-        let response = await axios.post<Token>(url, data)
-        return response.data
+        console.log("sending login");
+        
+        const url = `${MAIN_API_URL}/authentication/login`
+        try {
+            
+            let response = await axios.post<Token>(url, data)
+            console.log("got login");
+            return response.data
+        } catch (error) {
+            console.log(error);
+            
+        }
+
     }
 }
 
