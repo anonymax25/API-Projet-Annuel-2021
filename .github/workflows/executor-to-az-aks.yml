@@ -1,8 +1,9 @@
 # This workflow will build a docker container, publish it to Azure Container Registry, and deploy it to ACR when a release is created
 
-name: Build and Deploy to Azure
+name: Build and Deploy Code executor to Azure
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "master"

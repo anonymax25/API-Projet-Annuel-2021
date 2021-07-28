@@ -52,16 +52,17 @@ export class UsersService extends BaseService<User>{
     throw new NotFoundException('User with this id does not exist');
   }
 
-  async getAllCodesByLanguage(userId: number, language: Languages) {
+  async getAllCodesByLanguage(userId: number, language: string) {
     const userWithCodes = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['codes'] }
     
     );
+
     if (userWithCodes) {
       return Promise.all(
         userWithCodes.codes
-          .filter(code => code.language === language)
+          .filter(code => language != "undefined" ? code.language === language : true)
           .map(async (code) => {
             return {
               ...code

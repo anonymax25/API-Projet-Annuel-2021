@@ -61,10 +61,6 @@ export class TokenCodeSaveService {
       }
 
       return await tokensList
-                      .map(i => {
-                        console.log(i);
-                        return i;
-                      })
                       .map((item, index): CodeSimilarity => {
                         let distance = this.levenshteinDistance(token, item.token)
                         let maximalLength = token.length > item.token.length ? token.length : item.token.length

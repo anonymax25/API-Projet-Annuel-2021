@@ -14,13 +14,11 @@ export class CodeSaveController {
 
   
   @Get('code')
-  @UseGuards(JwtAuthenticationGuard)
   async getCodesByName(@Req() request: RequestWithUser, @Query('name') name: string) {
     return this.codeSaveService.findByName(name);
   }
   
   @Get('codes')
-  @UseGuards(JwtAuthenticationGuard)
   async getAllCodes(@Req() request: RequestWithUser, @Query('language') language: Languages) {
     return this.codeSaveService.findAll();
   }
