@@ -3,10 +3,8 @@ import axios from 'axios';
 import * as fs from 'fs';
 import * as FormData from "form-data";
 import { AuthenticationService, LoginModel, Token } from './authentication.service';
-import { config } from 'src/main';
 
 const { ENV, MAIN_API_URL, MAIN_API_EMAIL, MAIN_API_PASSWORD } = process.env
-
 
 @Injectable()
 export class FileService {
