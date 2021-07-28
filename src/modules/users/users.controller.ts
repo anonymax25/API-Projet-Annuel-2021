@@ -87,7 +87,7 @@ export class UsersController {
   @Post('code')
   @UseGuards(JwtAuthenticationGuard)
   async addCode(@Req() request: RequestWithUser, @Body() code: CodeDTO) {
-    return this.usersService.addCode(request.user.id, code.name, code.code, code.language);
+    return this.usersService.addCode(request.user.id, code);
   }
   
   @Put('code')

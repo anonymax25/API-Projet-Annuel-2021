@@ -82,9 +82,9 @@ let UsersService = class UsersService extends base_service_1.BaseService {
             throw new common_1.NotFoundException('User with this id does not exist');
         });
     }
-    addCode(userId, name, code, langage) {
+    addCode(userId, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.codeSaveService.saveCode(userId, name, code, langage);
+            return this.codeSaveService.saveCode(userId, code);
         });
     }
     updateCode(code) {

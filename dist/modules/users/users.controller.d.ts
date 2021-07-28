@@ -23,6 +23,7 @@ export declare class UsersController {
         name: string;
         code: string;
         language: Languages;
+        isPrivate: boolean;
         owner: import("./user.entity").User;
     }[]>;
     getUserById(request: RequestWithUser, uid: number): Promise<import("./user.entity").User>;

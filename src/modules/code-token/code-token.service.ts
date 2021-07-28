@@ -53,11 +53,6 @@ export class TokenCodeSaveService {
         langage: code.language,
       })).filter(tokenCode =>  code.id ? tokenCode.codeId !== code.id : -1)
 
-      console.log(code);
-      console.log(token);
-      
-      
-
       if(!tokensList.length) {
         return {
           token: null,

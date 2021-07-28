@@ -26,9 +26,10 @@ export declare class UsersService extends BaseService<User> {
         name: string;
         code: string;
         language: Languages;
+        isPrivate: boolean;
         owner: User;
     }[]>;
-    addCode(userId: number, name: string, code: string, langage: Languages): Promise<Code>;
+    addCode(userId: number, code: CodeDTO): Promise<Code>;
     updateCode(code: CodeDTO | Code): Promise<Code | (CodeDTO & Code)>;
     deleteCode(id: number): Promise<import("typeorm").DeleteResult>;
 }

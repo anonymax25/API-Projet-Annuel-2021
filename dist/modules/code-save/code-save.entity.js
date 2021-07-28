@@ -38,6 +38,10 @@ __decorate([
     __metadata("design:type", String)
 ], Code.prototype, "language", void 0);
 __decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", Boolean)
+], Code.prototype, "isPrivate", void 0);
+__decorate([
     typeorm_1.ManyToOne(() => user_entity_1.User, (owner) => owner.files),
     __metadata("design:type", user_entity_1.User)
 ], Code.prototype, "owner", void 0);

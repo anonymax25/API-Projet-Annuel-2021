@@ -88,7 +88,7 @@ let UsersController = class UsersController {
     }
     addCode(request, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.usersService.addCode(request.user.id, code.name, code.code, code.language);
+            return this.usersService.addCode(request.user.id, code);
         });
     }
     updateCode(request, code) {

@@ -6,6 +6,7 @@ declare class Code extends BaseEntity {
     name: string;
     code: string;
     language: Languages;
+    isPrivate: boolean;
     owner: User;
     constructor(id: number, name: string, code: string, owner: User);
 }

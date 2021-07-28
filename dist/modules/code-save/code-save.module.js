@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const code_token_module_1 = require("../code-token/code-token.module");
+const code_save_controller_1 = require("./code-save.controller");
 const code_save_entity_1 = require("./code-save.entity");
 const code_save_service_1 = require("./code-save.service");
 let CodeSaveModule = class CodeSaveModule {
@@ -22,6 +23,7 @@ CodeSaveModule = __decorate([
             config_1.ConfigModule,
             code_token_module_1.TokenCodeSaveModule,
         ],
+        controllers: [code_save_controller_1.CodeSaveController],
         providers: [code_save_service_1.CodeSaveService],
         exports: [code_save_service_1.CodeSaveService]
     })

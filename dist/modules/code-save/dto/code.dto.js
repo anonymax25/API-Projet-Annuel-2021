@@ -26,6 +26,11 @@ __decorate([
     __metadata("design:type", String)
 ], CodeDTO.prototype, "code", void 0);
 __decorate([
+    class_validator_1.IsBoolean(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", Boolean)
+], CodeDTO.prototype, "isPrivate", void 0);
+__decorate([
     class_validator_1.IsNotEmpty(),
     class_validator_1.IsIn(Object.values(languages_enum_1.Languages)),
     __metadata("design:type", String)

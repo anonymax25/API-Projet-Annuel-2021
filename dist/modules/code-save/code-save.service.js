@@ -34,19 +34,30 @@ let CodeSaveService = class CodeSaveService {
         this.tokenCodeSaveService = tokenCodeSaveService;
         this.configService = configService;
     }
-    saveCode(ownerId, name, code, language) {
+    saveCode(ownerId, code) {
         return __awaiter(this, void 0, void 0, function* () {
             const newCode = this.codeSaveRepository.create({
-                name: name,
-                code: code,
+                name: code.name,
+                code: code.code,
                 owner: {
                     id: ownerId
                 },
-                language
+                language: code.language,
+                isPrivate: code.isPrivate
             });
             const codeDB = yield this.codeSaveRepository.save(newCode);
-            yield this.tokenCodeSaveService.saveToken(ownerId, codeDB, language);
+            yield this.tokenCodeSaveService.saveToken(ownerId, codeDB, code.language);
             return codeDB;
+        });
+    }
+    findAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.codeSaveRepository.find({ isPrivate: false });
+        });
+    }
+    findByName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.codeSaveRepository.find({ name });
         });
     }
     updateCode(code) {
