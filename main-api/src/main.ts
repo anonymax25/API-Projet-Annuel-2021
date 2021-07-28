@@ -26,11 +26,11 @@ const { ENV, PORT, API_VERSION } = process.env
 
 async function bootstrap() {
 
-  // if(ENV === 'prod'){
-  //   logger.log("Download client start")
-  //   await downloadClient()
-  //   logger.log("Download client finished")
-  // }
+  if(ENV === 'prod'){
+    logger.log("Download client start")
+    await downloadClient()
+    logger.log("Download client finished")
+  }
 
   const allowedResponseOrigins = [
     "http://localhost:3000",
