@@ -29,7 +29,7 @@ export class FileService {
                 }
             };
 
-            const sendImgUrl = `${config.mainApiConfig.url}/user/${userId}/file?isResult=true`
+            const sendImgUrl = `${MAIN_API_URL}/user/${userId}/file?isResult=true`
             const uploadResponse = await axios.post(sendImgUrl, form, request_config);
         } catch (error) {
             throw new InternalServerErrorException(error)            
@@ -42,7 +42,7 @@ export class FileService {
                 }
             };
 
-            const updateUserKey = `${config.mainApiConfig.url}/user/${userId}/fileKey`
+            const updateUserKey = `${MAIN_API_URL}/user/${userId}/fileKey`
             const updateResponse = await axios.put(updateUserKey, { resultKey: key}, updateUserConfig);
         } catch (error) {
             throw new InternalServerErrorException(error)            
