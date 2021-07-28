@@ -24,12 +24,3 @@ async function bootstrap() {
   });
 }
 bootstrap();
-
-export const config = {
-  execution_timeout: 2000,
-  mainApiConfig: {
-    url: "http://localhost:3030/api/v1",
-    email: "testing@testing.com",
-    password: "testing",
-  }
-}
