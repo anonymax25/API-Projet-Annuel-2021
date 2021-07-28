@@ -6,5 +6,6 @@ export declare const JsConstants: {
     readonly CONSOLE: RegExp;
     readonly WHITESPACE: RegExp;
     readonly BACK_SLASH: RegExp;
+    readonly SEMI_COLON: RegExp;
     readonly VARS: RegExp;
 };

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CodeResult = void 0;
+exports.CodeSimilarity = exports.CodeResult = void 0;
 class CodeResult {
     constructor(language, result, similarity) {
         this.language = language;
@@ -9,4 +9,7 @@ class CodeResult {
     }
 }
 exports.CodeResult = CodeResult;
+class CodeSimilarity {
+}
+exports.CodeSimilarity = CodeSimilarity;
 //# sourceMappingURL=code-result.js.map

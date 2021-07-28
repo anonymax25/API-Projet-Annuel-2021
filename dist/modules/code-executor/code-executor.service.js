@@ -42,7 +42,7 @@ let CodeExecutorService = class CodeExecutorService {
                 codeExecution: new code_execution_1.CodeExecution(username, code.code, language, fileUrl, key, userId)
             };
             let codeSimilarity = yield this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
-            this.logger.log(`similarity: ${codeSimilarity}%`);
+            this.logger.log(`similarity: ${code.id ? code.id : "unsaved"} -> ${codeSimilarity.token ? codeSimilarity.token.codeId : "none found"} = ${codeSimilarity.percent}%`);
             try {
                 const response = yield this.httpService.post(url, body).toPromise();
                 return new code_result_1.CodeResult(language, response.data, codeSimilarity);

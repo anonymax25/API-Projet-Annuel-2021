@@ -66,17 +66,31 @@ let TokenCodeSaveService = class TokenCodeSaveService {
                 token = this.tokenizeJavascript(code.code);
             if (langage === languages_enum_1.Languages.python)
                 token = this.tokenizePython(code.code);
-            let tokensList = yield this.tokenCodeSaveRepository.find({
+            let tokensList = (yield this.tokenCodeSaveRepository.find({
                 langage: code.language,
-                codeId: typeorm_2.Not(code.id)
-            });
-            if (!tokensList.length)
-                return 0;
-            return (yield tokensList.map((item, index) => {
+            })).filter(tokenCode => code.id ? tokenCode.codeId !== code.id : -1);
+            console.log(code);
+            console.log(token);
+            if (!tokensList.length) {
+                return {
+                    token: null,
+                    percent: 0
+                };
+            }
+            return yield tokensList
+                .map(i => {
+                console.log(i);
+                return i;
+            })
+                .map((item, index) => {
                 let distance = this.levenshteinDistance(token, item.token);
                 let maximalLength = token.length > item.token.length ? token.length : item.token.length;
-                return (maximalLength - distance) / maximalLength;
-            }).sort(function (a, b) { return b - a; })[0]) * 100;
+                return {
+                    token: item,
+                    percent: (maximalLength - distance) / maximalLength * 100
+                };
+            })
+                .sort((a, b) => b.percent - a.percent)[0];
         });
     }
     tokenizeJavascript(code) {
@@ -87,7 +101,27 @@ let TokenCodeSaveService = class TokenCodeSaveService {
             .replace(js_constants_1.JsConstants.STRING, "S")
             .replace(js_constants_1.JsConstants.NUMBER, "N")
             .replace(js_constants_1.JsConstants.VARS, "V")
-            .replace(js_constants_1.JsConstants.WHITESPACE, "");
+            .replace(js_constants_1.JsConstants.WHITESPACE, "")
+            .replace(js_constants_1.JsConstants.SEMI_COLON, "")
+            .replace("const", "c")
+            .replace("let", "l")
+            .replace("var", "vr")
+            .replace("function", "f")
+            .replace("return", "r")
+            .replace("for", "fr")
+            .replace("while", "w")
+            .replace("while", "w")
+            .replace("await", "a")
+            .replace("break", "b")
+            .replace("case", "k")
+            .replace("continue", "cn")
+            .replace("class", "cl")
+            .replace("false", "fs")
+            .replace("true", "tr")
+            .replace("if", "i")
+            .replace("else", "ls")
+            .replace("this", "t")
+            .replace("new", "n");
         return token;
     }
     tokenizePython(code) {
@@ -97,7 +131,43 @@ let TokenCodeSaveService = class TokenCodeSaveService {
             .replace(py_constants_1.PyConstants.STRING, "S")
             .replace(py_constants_1.PyConstants.NUMBER, "N")
             .replace(py_constants_1.PyConstants.VARS, "V")
-            .replace(py_constants_1.PyConstants.WHITESPACE, "");
+            .replace(py_constants_1.PyConstants.WHITESPACE, "")
+            .replace("False", "f")
+            .replace("await", "a")
+            .replace("else", "e")
+            .replace("import", "im")
+            .replace("pass", "p")
+            .replace("raise", "r")
+            .replace("in", "i")
+            .replace("except", "x")
+            .replace("break", "b")
+            .replace("None", "no")
+            .replace("True", "t")
+            .replace("class", "c")
+            .replace("finally", "fi")
+            .replace("is", "I")
+            .replace("return", "r")
+            .replace("and", "&")
+            .replace("continue", "c")
+            .replace("for", "F")
+            .replace("lambda", "l")
+            .replace("try", "T")
+            .replace("as", "s")
+            .replace("def", "d")
+            .replace("from", "F")
+            .replace("nonlocal", "nl")
+            .replace("while", "w")
+            .replace("assert", "A")
+            .replace("del", "D")
+            .replace("global", "g")
+            .replace("not", "N")
+            .replace("with", "W")
+            .replace("async", "as")
+            .replace("elif", "E")
+            .replace("if", "If")
+            .replace("or", "|")
+            .replace("yield", "y")
+            .replace("token", "tk");
         return token;
     }
     levenshteinDistance(str1, str2) {
