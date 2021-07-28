@@ -9,6 +9,7 @@ import { JsConstants } from "./utils/js-constants";
 import { PyConstants } from "./utils/py-constants";
 import { response } from "express";
 import Code from "modules/code-save/code-save.entity";
+import { CodeSimilarity } from "modules/code-executor/entity/code-result";
 
 @Injectable()
 export class TokenCodeSaveService {
@@ -47,19 +48,37 @@ export class TokenCodeSaveService {
 
       if(langage===Languages.javascript) token = this.tokenizeJavascript(code.code);
       if(langage===Languages.python) token = this.tokenizePython(code.code);
-      
-      let tokensList = await this.tokenCodeSaveRepository.find({
+
+      let tokensList = (await this.tokenCodeSaveRepository.find({
         langage: code.language,
-        codeId: Not(code.id)
-      })
+      })).filter(tokenCode =>  code.id ? tokenCode.codeId !== code.id : -1)
 
-      if(!tokensList.length) return 0;
+      console.log(code);
+      console.log(token);
+      
+      
 
-      return await tokensList.map((item, index) => {
-        let distance = this.levenshteinDistance(token, item.token)
-        let maximalLength = token.length > item.token.length ? token.length : item.token.length
-        return ( maximalLength - distance ) / maximalLength
-      }).sort(function(a, b){return b-a})[0] * 100
+      if(!tokensList.length) {
+        return {
+          token: null,
+          percent: 0
+        }
+      }
+
+      return await tokensList
+                      .map(i => {
+                        console.log(i);
+                        return i;
+                      })
+                      .map((item, index): CodeSimilarity => {
+                        let distance = this.levenshteinDistance(token, item.token)
+                        let maximalLength = token.length > item.token.length ? token.length : item.token.length
+                        return {
+                          token: item, 
+                          percent: (maximalLength - distance) / maximalLength * 100
+                        }
+                      })
+                      .sort((a, b) => b.percent - a.percent)[0]
     }
 
     tokenizeJavascript(code: string): string {
@@ -71,6 +90,26 @@ export class TokenCodeSaveService {
                           .replace(JsConstants.NUMBER, "N")
                           .replace(JsConstants.VARS, "V")
                           .replace(JsConstants.WHITESPACE, "")
+                          .replace(JsConstants.SEMI_COLON, "")
+                          .replace("const", "c")
+                          .replace("let", "l")
+                          .replace("var", "vr")
+                          .replace("function", "f")
+                          .replace("return", "r")
+                          .replace("for", "fr")
+                          .replace("while", "w")
+                          .replace("while", "w")
+                          .replace("await", "a")
+                          .replace("break", "b")
+                          .replace("case", "k")
+                          .replace("continue", "cn")
+                          .replace("class", "cl")
+                          .replace("false", "fs")
+                          .replace("true", "tr")
+                          .replace("if", "i")
+                          .replace("else", "ls")
+                          .replace("this", "t")
+                          .replace("new", "n")
         return token;
     }
 
@@ -82,6 +121,43 @@ export class TokenCodeSaveService {
                           .replace(PyConstants.NUMBER, "N")
                           .replace(PyConstants.VARS, "V")
                           .replace(PyConstants.WHITESPACE, "")
+                          .replace("False", "f")
+                          .replace("await", "a")
+                          .replace("else", "e")
+                          .replace("import", "im")
+                          .replace("pass", "p")
+                          .replace("raise", "r")
+                          .replace("in", "i")
+                          .replace("except", "x")
+                          .replace("break", "b")
+                          .replace("None", "no")
+                          .replace("True", "t")
+                          .replace("class", "c")
+                          .replace("finally", "fi")
+                          .replace("is", "I")
+                          .replace("return", "r")
+                          .replace("and", "&")
+                          .replace("continue", "c")
+                          .replace("for", "F")
+                          .replace("lambda", "l")
+                          .replace("try", "T")
+                          .replace("as", "s")
+                          .replace("def", "d")
+                          .replace("from", "F")
+                          .replace("nonlocal", "nl")
+                          .replace("while", "w")
+                          .replace("assert", "A")
+                          .replace("del", "D")
+                          .replace("global", "g")
+                          .replace("not", "N")
+                          .replace("with", "W")
+                          .replace("async", "as")
+                          .replace("elif", "E")
+                          .replace("if", "If")
+                          .replace("or", "|")
+                          .replace("yield", "y")
+                          .replace("token", "tk")
+
         return token;
     }
 

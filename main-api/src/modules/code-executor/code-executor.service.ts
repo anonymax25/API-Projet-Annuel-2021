@@ -34,7 +34,7 @@ export class CodeExecutorService {
         }
         let codeSimilarity = await this.tokenCodeSaveService.getLowestSimilarityDistance(code, language);
 
-        this.logger.log(`similarity: ${codeSimilarity}%`)
+        this.logger.log(`similarity: ${code.id ? code.id : "unsaved"} -> ${codeSimilarity.token ? codeSimilarity.token.codeId : "none found" } = ${codeSimilarity.percent}%`)
 
         try {
             const response = await this.httpService.post(url, body).toPromise();
