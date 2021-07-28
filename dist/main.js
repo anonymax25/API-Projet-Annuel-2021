@@ -31,6 +31,11 @@ const logger = new common_1.Logger('Init');
 const { ENV, PORT, API_VERSION } = process.env;
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
+        if (ENV === 'prod') {
+            logger.log("Download client start");
+            yield downloadClient();
+            logger.log("Download client finished");
+        }
         const allowedResponseOrigins = [
             "http://localhost:3000",
             "http://localhost:3003",
