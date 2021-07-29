@@ -5,6 +5,7 @@ import { UpdateUserDTO } from './dto/updateUser.dto';
 import { CodeDTO } from '../code-save/dto/code.dto';
 import { PrivateFilesService } from '../private-files/private-files.service';
 import Code from '../code-save/code-save.entity';
+import { ResultFileDTO } from './dto/resultFile.dto';
 export declare class UsersController {
     private readonly usersService;
     private readonly privateFilesService;
@@ -32,7 +33,5 @@ export declare class UsersController {
     addCode(request: RequestWithUser, code: CodeDTO): Promise<Code>;
     updateCode(request: RequestWithUser, code: CodeDTO | Code): Promise<Code | (CodeDTO & Code)>;
     deleteCode(request: RequestWithUser, id: number): Promise<import("typeorm").DeleteResult>;
-    updateResultFile(request: RequestWithUser, id: number, body: {
-        resultKey: string;
-    }): Promise<import("./user.entity").User>;
+    updateResultFile(request: RequestWithUser, id: number, body: ResultFileDTO): Promise<import("./user.entity").User>;
 }

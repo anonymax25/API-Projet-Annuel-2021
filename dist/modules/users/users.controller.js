@@ -31,6 +31,7 @@ const common_2 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const code_dto_1 = require("../code-save/dto/code.dto");
 const private_files_service_1 = require("../private-files/private-files.service");
+const resultFile_dto_1 = require("./dto/resultFile.dto");
 let UsersController = class UsersController {
     constructor(usersService, privateFilesService) {
         this.usersService = usersService;
@@ -206,7 +207,7 @@ __decorate([
     common_1.UseGuards(jwt_authentication_guard_1.default),
     __param(0, common_1.Req()), __param(1, common_1.Param('id')), __param(2, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Number, Object]),
+    __metadata("design:paramtypes", [Object, Number, resultFile_dto_1.ResultFileDTO]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateResultFile", null);
 UsersController = __decorate([
