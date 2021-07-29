@@ -9,16 +9,9 @@ export class AuthenticationService {
         
         const url = `${MAIN_API_URL}/authentication/login`
         
-        console.log(url);
-        
-        console.log("sending login2", data);
-        
         let response = await axios.post<Token>(url, data)
         
-        console.log("got login", JSON.stringify(response.data, null, 2));
-        
         return response.data
-
     }
 }
 

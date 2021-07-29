@@ -24,8 +24,14 @@ export class ExecutionService {
 `import os 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 f = open(dir_path + "/../file/${message.fileKey}", "rb")
+
 ${message.code}
-run(f.read().hex());
+
+result = run(f.read().hex())
+f.close()
+
+f = open(dir_path + "/../file/${message.name}:result.${message.fileKey.split('.').pop()}", "wb")
+f.write(bytearray.fromhex(result))
 `
 
         const formatStderr = (stderr: string) => {
@@ -123,9 +129,10 @@ run(f.read().hex());
                 
                 const closeExecution = Date.now()
                 
-                const statsOutput = fs.statSync(filePath)
+                const statsOutput = fs.statSync(`./file/${codeExecution.name}:result.${codeExecution.fileKey.split('.').pop()}`)
 
                 fs.unlinkSync(codeFilePath)
+                fs.unlinkSync(filePath)
 
                 if(isTimeout){
                     let result: Result = {
@@ -142,6 +149,8 @@ run(f.read().hex());
 
                 await this.fileService.uploadFile(resultKey, codeExecution.userId)
                 
+                fs.unlinkSync(`./file/${resultKey}`)
+
                 this.logger.log(`uploaded result for ${codeExecution.userId}`);
 
 
@@ -170,12 +179,12 @@ run(f.read().hex());
 
     getFileSize(stats: fs.Stats): FileSize {
         let bitSizes = new Map<number, string>()
-        bitSizes.set(0, "b")
-        bitSizes.set(1, "Kb")
-        bitSizes.set(2, "Mb")
-        bitSizes.set(3, "Gb")
-        bitSizes.set(4, "Tb")
-        bitSizes.set(5, "Pb")
+        bitSizes.set(0, "o")
+        bitSizes.set(1, "Ko")
+        bitSizes.set(2, "Mo")
+        bitSizes.set(3, "Go")
+        bitSizes.set(4, "To")
+        bitSizes.set(5, "Po")
 
         let value = stats.size
         

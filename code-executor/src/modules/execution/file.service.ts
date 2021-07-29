@@ -12,6 +12,7 @@ export class FileService {
     constructor(private authenticationService: AuthenticationService){}
 
     async uploadFile(key: string, userId: number){
+
         const mainApiConfig: LoginModel = {
             email: MAIN_API_EMAIL,
             password: MAIN_API_PASSWORD
@@ -20,40 +21,25 @@ export class FileService {
 
         const form = new FormData();
         form.append('file', fs.createReadStream(`./file/${key}`));
-
-        try {
-            const request_config = {
-                headers: {
-                    'Authorization': `Bearer ${token.token}`,
-                    ...form.getHeaders()
-                }
-            };
-
-            const sendImgUrl = `${MAIN_API_URL}/user/${userId}/file?isResult=true`
-            const uploadResponse = await axios.post(sendImgUrl, form, request_config);
-        } catch (error) {
-            throw new InternalServerErrorException(error)            
-        }
-
-        try {
-            const updateUserConfig = {
-                headers: {
-                    'Authorization': `Bearer ${token.token}`,
-                }
-            };
-
-            console.log({ resultKey: key});
-            
-            const updateUserKey = `${MAIN_API_URL}/user/${userId}/fileKey`
-            const updateResponse = await axios.put(updateUserKey, { resultKey: key}, updateUserConfig);
-            
-        } catch (error) {
-            console.log(JSON.stringify(error, null, 2));
-            
-            throw new InternalServerErrorException(error)            
-        }
         
+        const request_config = {
+            headers: {
+                'Authorization': `Bearer ${token.token}`,
+                ...form.getHeaders()
+            }
+        };
 
-        
+        const sendImgUrl = `${MAIN_API_URL}/user/${userId}/file?isResult=true`
+        const uploadResponse = await axios.post(sendImgUrl, form, request_config);
+
+
+        const updateUserConfig = {
+            headers: {
+                'Authorization': `Bearer ${token.token}`,
+            }
+        };
+
+        const updateUserKey = `${MAIN_API_URL}/user/${userId}/fileKey`
+        const updateResponse = await axios.put(updateUserKey, { resultKey: key}, updateUserConfig);
     }
 }
