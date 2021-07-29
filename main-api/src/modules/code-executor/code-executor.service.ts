@@ -37,7 +37,9 @@ export class CodeExecutorService {
         this.logger.log(`similarity: ${code.id ? code.id : "unsaved"} -> ${codeSimilarity.token ? codeSimilarity.token.codeId : "none found" } = ${codeSimilarity.percent}%`)
 
         try {
+            this.logger.log(`Sending code execution`)
             const response = await this.httpService.post(url, body).toPromise();
+            this.logger.log(`Finished code execution`)
             return new CodeResult(language, response.data, codeSimilarity)
         }catch(e){
             throw new NotFoundException(e.message)

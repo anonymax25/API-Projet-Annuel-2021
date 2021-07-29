@@ -8,8 +8,9 @@ import { Extensions } from '../../entity/extensions.enum';
 import { RunCommand } from '../../entity/run-command.enum';
 import { CodeExecution } from './entity/code-execution';
 import { FileService } from './file.service';
+import { dirname } from 'path';
 
-const { EXEC_TIMEOUT } = process.env
+const { ENV, EXEC_TIMEOUT } = process.env
 
 @Injectable()
 export class ExecutionService {
@@ -19,19 +20,24 @@ export class ExecutionService {
     constructor(private fileService: FileService){}
 
     async runPython(message: CodeExecution): Promise<Result> {
+
+        var path = require('path');
+        var appDir = path.dirname(require.main.filename);     
+        let resultFilePath = `${appDir}/../file/${message.name}:result.${message.fileKey.split('.').pop()}`
         
         message.code = 
 `import os 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-f = open(dir_path + "/../file/${message.fileKey}", "rb")
+f = open("${appDir}/../file/${message.fileKey}", "rb")
 
 ${message.code}
 
 result = run(f.read().hex())
 f.close()
 
-f = open(dir_path + "/../file/${message.name}:result.${message.fileKey.split('.').pop()}", "wb")
+f = open("${resultFilePath}", "wb")
 f.write(bytearray.fromhex(result))
+f.close()
 `
 
         const formatStderr = (stderr: string) => {
@@ -79,7 +85,7 @@ f.write(bytearray.fromhex(result))
                 if (cb) cb(err.message);
             });
         })
-      };
+    };
       
     async runCode(codeExecution: CodeExecution, formatStderr: (stderr: string) => string): Promise<Result> {
 
@@ -127,9 +133,13 @@ f.write(bytearray.fromhex(result))
         return new Promise((resolve, reject) => {
             node.on('exit', async (code) => {
                 
+                var path = require('path');
+                var appDir = path.dirname(require.main.filename);     
+                let resultFilePath = `${appDir}/../file/${codeExecution.name}:result.${codeExecution.fileKey.split('.').pop()}`
+                  
                 const closeExecution = Date.now()
                 
-                const statsOutput = fs.statSync(`./file/${codeExecution.name}:result.${codeExecution.fileKey.split('.').pop()}`)
+                const statsOutput = fs.statSync(resultFilePath)
 
                 fs.unlinkSync(codeFilePath)
                 fs.unlinkSync(filePath)
@@ -147,9 +157,10 @@ f.write(bytearray.fromhex(result))
                     resolve(result)
                 }
 
-                await this.fileService.uploadFile(resultKey, codeExecution.userId)
+                await this.fileService.uploadFile(resultKey, resultFilePath, codeExecution.userId)
                 
-                fs.unlinkSync(`./file/${resultKey}`)
+                fs.unlinkSync(resultFilePath)
+
 
                 this.logger.log(`uploaded result for ${codeExecution.userId}`);
 

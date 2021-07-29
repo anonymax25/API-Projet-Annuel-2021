@@ -11,7 +11,7 @@ export class FileService {
 
     constructor(private authenticationService: AuthenticationService){}
 
-    async uploadFile(key: string, userId: number){
+    async uploadFile(key: string, resultFilePath: string, userId: number){
 
         const mainApiConfig: LoginModel = {
             email: MAIN_API_EMAIL,
@@ -20,7 +20,7 @@ export class FileService {
         const token: Token = await this.authenticationService.login(mainApiConfig)
 
         const form = new FormData();
-        form.append('file', fs.createReadStream(`./file/${key}`));
+        form.append('file', fs.createReadStream(resultFilePath));
         
         const request_config = {
             headers: {

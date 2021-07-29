@@ -1,4 +1,4 @@
 export enum RunCommand {
-    python = 'python',
+    python = 'python3.8',
     javascript = 'node'
 }
