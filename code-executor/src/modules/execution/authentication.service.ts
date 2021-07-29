@@ -6,7 +6,7 @@ const { ENV, MAIN_API_URL } = process.env
 export class AuthenticationService {
 
     async login(data: LoginModel): Promise<Token> {
-        console.log("sending login", data);
+        console.log("sending login2", data);
         
         const url = `${MAIN_API_URL}/authentication/login`
             
