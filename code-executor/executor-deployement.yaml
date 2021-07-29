@@ -17,9 +17,10 @@ spec:
         group: executor
     spec:
       containers:
-        - name: executor
-          image: executor
-          ports:
-            - containerPort: 3001
-          resources: {}
+      - name: executor
+        image: executor
+        ports:
+          - containerPort: 3001
+        resources: {}
+      imagePullPolicy: Always
 status: {}
