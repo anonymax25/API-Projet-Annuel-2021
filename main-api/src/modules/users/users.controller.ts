@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CodeDTO } from '../code-save/dto/code.dto';
 import { PrivateFilesService } from '../private-files/private-files.service';
 import Code from '../code-save/code-save.entity';
+import { ResultFileDTO } from './dto/resultFile.dto';
 
 @ApiTags('user')
 @Controller('user')
@@ -104,7 +105,7 @@ export class UsersController {
 
   @Put(':id/fileKey')
   @UseGuards(JwtAuthenticationGuard)
-  async updateResultFile(@Req() request: RequestWithUser, @Param('id') id: number, @Body() body: { resultKey: string}) {
+  async updateResultFile(@Req() request: RequestWithUser, @Param('id') id: number, @Body() body: ResultFileDTO) {
     let user = await this.usersService.findOne({ id });
 
     user.resultKey = body.resultKey

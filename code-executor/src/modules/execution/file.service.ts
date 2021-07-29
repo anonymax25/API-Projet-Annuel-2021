@@ -42,9 +42,14 @@ export class FileService {
                 }
             };
 
+            console.log({ resultKey: key});
+            
             const updateUserKey = `${MAIN_API_URL}/user/${userId}/fileKey`
             const updateResponse = await axios.put(updateUserKey, { resultKey: key}, updateUserConfig);
+            
         } catch (error) {
+            console.log(JSON.stringify(error, null, 2));
+            
             throw new InternalServerErrorException(error)            
         }
         

@@ -6,10 +6,13 @@ const { ENV, MAIN_API_URL } = process.env
 export class AuthenticationService {
 
     async login(data: LoginModel): Promise<Token> {
-        console.log("sending login2", data);
         
         const url = `${MAIN_API_URL}/authentication/login`
-            
+        
+        console.log(url);
+        
+        console.log("sending login2", data);
+        
         let response = await axios.post<Token>(url, data)
         
         console.log("got login", JSON.stringify(response.data, null, 2));
