@@ -15,7 +15,11 @@ export class CodeSaveController {
   
   @Get('code')
   async getCodesByName(@Req() request: RequestWithUser, @Query('name') name: string) {
-    return this.codeSaveService.findByName(name);
+    if(isNaN(+name))
+      return this.codeSaveService.findByName(name);
+    else  
+      return this.codeSaveService.findById(parseInt(name));
+    
   }
   
   @Get('codes')
