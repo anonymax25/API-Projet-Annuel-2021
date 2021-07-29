@@ -32,7 +32,10 @@ let CodeSaveController = class CodeSaveController {
     }
     getCodesByName(request, name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.codeSaveService.findByName(name);
+            if (isNaN(+name))
+                return this.codeSaveService.findByName(name);
+            else
+                return this.codeSaveService.findById(parseInt(name));
         });
     }
     getAllCodes(request, language) {

@@ -11,6 +11,7 @@ export declare class CodeSaveService {
     saveCode(ownerId: number, code: CodeDTO): Promise<Code>;
     findAll(): Promise<Code[]>;
     findByName(name: string): Promise<Code[]>;
+    findById(id: number): Promise<Code[]>;
     updateCode(code: CodeDTO | Code): Promise<Code | (CodeDTO & Code)>;
     deleteCode(id: number): Promise<import("typeorm").DeleteResult>;
 }

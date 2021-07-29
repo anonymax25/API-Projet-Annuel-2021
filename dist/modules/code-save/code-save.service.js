@@ -64,6 +64,11 @@ let CodeSaveService = class CodeSaveService {
                 .getMany();
         });
     }
+    findById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.codeSaveRepository.findByIds([id], { relations: ['owner'] });
+        });
+    }
     updateCode(code) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.codeSaveRepository.save(code);

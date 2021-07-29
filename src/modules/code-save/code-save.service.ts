@@ -42,8 +42,12 @@ export class CodeSaveService {
     return this.codeSaveRepository
       .createQueryBuilder("code")
       .leftJoinAndSelect('code.owner', 'o')
-      .where("code.name like :name and code.isPrivate = :isPrivate", { name:`%${name}%`, isPrivate: false })
+      .where("code.name like :name and code.isPrivate = :isPrivate", { name:`%${name}%`, isPrivate: false})
       .getMany();
+  }
+  
+  async findById(id: number){
+    return await this.codeSaveRepository.findByIds([id], {relations: ['owner']})
   }
   
   async updateCode(code: CodeDTO | Code) {
