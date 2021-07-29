@@ -139,7 +139,10 @@ f.close()
                   
                 const closeExecution = Date.now()
                 
-                const statsOutput = fs.statSync(resultFilePath)
+                let statsOutput
+                if(!isTimeout){
+                    statsOutput = fs.statSync(resultFilePath)
+                }
 
                 fs.unlinkSync(codeFilePath)
                 fs.unlinkSync(filePath)
