@@ -82,6 +82,7 @@ export declare class SubjectExecutor {
      * todo: we need to apply topological sort here as well
      */
     protected executeRemoveOperations(): Promise<void>;
+    private cloneMongoSubjectEntity;
     /**
      * Soft-removes all given subjects in the database.
      */

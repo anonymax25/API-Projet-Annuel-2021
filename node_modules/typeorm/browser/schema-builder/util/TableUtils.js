@@ -4,7 +4,7 @@ var TableUtils = /** @class */ (function () {
     TableUtils.createTableColumnOptions = function (columnMetadata, driver) {
         return {
             name: columnMetadata.databaseName,
-            length: columnMetadata.length,
+            length: driver.getColumnLength(columnMetadata),
             width: columnMetadata.width,
             charset: columnMetadata.charset,
             collation: columnMetadata.collation,

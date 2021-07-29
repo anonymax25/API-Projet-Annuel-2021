@@ -1,4 +1,4 @@
-import { getMetadataArgsStorage } from "../index";
+import { getMetadataArgsStorage } from "../globals";
 /**
  * Composite unique constraint must be set on entity classes and must specify entity's fields to be unique.
  */

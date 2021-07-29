@@ -14,6 +14,8 @@ export declare class MigrationExecutor {
      *   each: each migration is run in a separate transaction
      */
     transaction: "all" | "none" | "each";
+    private readonly migrationsDatabase?;
+    private readonly migrationsSchema?;
     private readonly migrationsTable;
     private readonly migrationsTableName;
     constructor(connection: Connection, queryRunner?: QueryRunner | undefined);

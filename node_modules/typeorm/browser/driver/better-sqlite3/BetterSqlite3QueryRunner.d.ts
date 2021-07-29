@@ -18,5 +18,5 @@ export declare class BetterSqlite3QueryRunner extends AbstractSqliteQueryRunner 
     /**
      * Executes a given SQL query.
      */
-    query(query: string, parameters?: any[]): Promise<any>;
+    query(query: string, parameters?: any[], useStructuredResult?: boolean): Promise<any>;
 }
