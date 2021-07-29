@@ -19,7 +19,7 @@ env:
   AKS_RESOURCE_GROUP: ${{ secrets.AKS_RESOURCE_GROUP }}
   AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
   DEPLOYMENT_NAME: executor
-  VERSION: v1
+  VERSION: latest
 
 jobs:
   setup-build-publish-deploy:
@@ -52,14 +52,14 @@ jobs:
         with:
           context: ./code-executor
           push: true
-          tags: natin56y/executor:v1
+          tags: natin56y/executor:latest
 
       # Deploy the Docker image to the AKS cluster
       - name: Deploy to AKS
         run: |
           az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_CLUSTER_NAME
           kubectl config current-context
-          kubectl create deployment $DEPLOYMENT_NAME --image=natin56y/executor:v1 --dry-run=client -o yaml > deployment.yaml
+          kubectl create deployment $DEPLOYMENT_NAME --image=natin56y/executor:latest --dry-run=client -o yaml > deployment.yaml
           kubectl apply -f deployment.yaml
           kubectl create service loadbalancer $DEPLOYMENT_NAME --tcp=80:$PORT --dry-run=client -o yaml > service.yaml
           kubectl apply -f service.yaml
